@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Création du lien vers la lib
+if [ ! -f lib/libnetwork.so.0 ]
+then
+	ln -s libnetwork.so lib/libnetwork.so.0
+fi
+
+# Chemin vers les autres libs
+export LD_LIBRARY_PATH=./lib:$LD_LIBRARY_PATH
+
+# Exécution de l'application
+./$1
+
