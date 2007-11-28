@@ -15,13 +15,13 @@ Entity::~Entity()
 
 void Entity::render()
 {
-  glPushMatrix();
-  _transform.apply();
-  if (_shape)
+    glPushMatrix();
+    _transform.apply();
+    if (_shape)
     {
-      _shape->render();
+        _shape->render();
     }
-  glPopMatrix();
+    glPopMatrix();
 }
 
 //---------------------------------------

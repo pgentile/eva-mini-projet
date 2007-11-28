@@ -132,21 +132,25 @@ Polyline::~Polyline()
 void Polyline::render()
 {
   glDisable(GL_LIGHTING);
+  
   if (_loop)
-    {
+  {
       glBegin(GL_LINE_LOOP);
-    }
+  }
   else
-    {
+  {
       glBegin(GL_LINE_STRIP);
-    }
+  }
+  
   glColor3f(1,1,1);
+  
   for (unsigned int i=0;i<_points->size();i++)
-    {
+  {
       glVertex3f((*_points)[i].getX(),
                  (*_points)[i].getY(),
                  (*_points)[i].getZ());
-    }
+  }
+  
   glEnd();
   glEnable(GL_LIGHTING);
 }
@@ -196,63 +200,32 @@ void Mesh::render()
 
 Grid::Grid(double width,double  height,unsigned int width_res,unsigned int height_res,double tex_scale)
 {
-  //Build vertices, normals and texcoords
-  for (unsigned int i=0;i<=width_res;i++)
+    //Build vertices, normals and texcoords
+    for (unsigned int i=0;i<=width_res;i++)
     {
-      for (unsigned int j=0;j<=height_res;j++)
-	{
-	  Vector3D vertex((width/width_res)*i,(height/height_res)*j,0.0);
-	  Vector3D normal(0,0,1);
-	  _vertices.push_back(vertex);
-	  _normals.push_back(normal);
-	  _texCoords.push_back(std::make_pair((double)i*tex_scale,(double)j*tex_scale));
-	}
+        for (unsigned int j=0;j<=height_res;j++)
+        {
+            Vector3D vertex((width/width_res)*i,(height/height_res)*j,0.0);
+            Vector3D normal(0,0,1);
+            _vertices.push_back(vertex);
+            _normals.push_back(normal);
+            _texCoords.push_back(std::make_pair((double)i*tex_scale,(double)j*tex_scale));
+        }
     }
-  //Build indices
-//   unsigned int current_index=0;
-//   for (unsigned int i=0;i<width_res*height_res*2;i++)
-//     {
-//       _indices.push_back(current_index);
-//       _indices.push_back(current_index+height_res+1);
-//       _indices.push_back(current_index+1);
-
-//       _indices.push_back(current_index+height_res+1);
-//       _indices.push_back(current_index+height_res+2);
-//       _indices.push_back(current_index+1);
-
-//       current_index+=1;
-//     }
-
-  for (unsigned int i=0;i<width_res;i++)
+    
+    //Build indices
+    for (unsigned int i=0;i<width_res;i++)
     {
-      for (unsigned int j=0;j<height_res;j++)
-	{
-	  _indices.push_back(i+j*(width_res+1));
-	  _indices.push_back(i+(width_res+1)*(j+1));
-	  _indices.push_back((i+1)+(width_res+1)*(j+1));
-
-	  _indices.push_back((i+1)+(width_res+1)*(j+1));
-	  _indices.push_back((i+1)+(width_res+1)*(j));
-	  _indices.push_back((i)+(width_res+1)*(j));
-
-	}
+        for (unsigned int j=0;j<height_res;j++)
+        {
+            _indices.push_back(i+j*(width_res+1));
+            _indices.push_back(i+(width_res+1)*(j+1));
+            _indices.push_back((i+1)+(width_res+1)*(j+1));
+            _indices.push_back((i+1)+(width_res+1)*(j+1));
+            _indices.push_back((i+1)+(width_res+1)*(j));
+            _indices.push_back((i)+(width_res+1)*(j));
+        }
     }
-
-//   std::cout<<"Nb vertices: "<<_vertices.size()<<std::endl;
-//   std::cout<<"Nb tex coords: "<<_texCoords.size()<<std::endl;
-//   std::cout<<"Nb indices: "<<_indices.size()<<std::endl;
-//   for (unsigned int i=0;i<_vertices.size();i++)
-//     {
-//       std::cout<<"vertex: "<<_vertices[i]<<std::endl;
-//     }
-//   for (unsigned int i=0;i<_texCoords.size();i++)
-//     {
-//       std::cout<<"texcoord: "<<_texCoords[i].first<<" "<<_texCoords[i].second<<std::endl;
-//     }
-//   for (unsigned int i=0;i<_indices.size();i++)
-//     {
-//       std::cout<<"indice: "<<_indices[i]<<std::endl;
-//     }
 }
 
 Grid::~Grid()
