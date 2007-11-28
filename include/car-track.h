@@ -7,28 +7,28 @@
 class CarTrack:public Entity
 {
 public:
-  CarTrack(TrafficLight* light);
-  virtual ~CarTrack();
-
-  inline Vector3D getPoint(unsigned int index) const
-  {
-    return _trackPoints[index];
-  }
-  inline unsigned int getNbPoints() const
-  {
-    return _trackPoints.size();
-  }
-  inline TrafficLight* getTrafficLight()
-  {
-    return _light;
-  }
+    CarTrack(TrafficLight* light);
+    virtual ~CarTrack();
+    
+    inline Vector3D getPoint(unsigned int index) const
+    {
+        return _trackPoints[index];
+    }
+    inline unsigned int getNbPoints() const
+    {
+        return _trackPoints.size();
+    }
+    inline TrafficLight* getTrafficLight()
+    {
+        return _light;
+    }
 
 protected:
-  virtual void initTrack();
-  virtual void initTrackShape();
+    virtual void initTrack();
+    virtual void initTrackShape();
 private:
-  std::vector<Vector3D> _trackPoints;
-  TrafficLight* _light;
+    std::vector<Vector3D> _trackPoints;
+    TrafficLight* _light;
 };
 
 #endif

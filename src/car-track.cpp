@@ -66,8 +66,8 @@ void CarTrack::initTrack()
 
 void CarTrack::initTrackShape()
 {
-  Shape* shape=new Shape();
-  Polyline* part=new Polyline();
+  Shape* shape   = new Shape();
+  Polyline* part = new Polyline();
   part->setPoints(&_trackPoints);
   shape->addPart(part);
   setShape(shape);
