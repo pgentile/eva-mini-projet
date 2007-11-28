@@ -14,12 +14,12 @@ public:
     virtual void render();
     
     /* Getters & setters */
-    double getWidth(void);
-    void setWidth(width);
-    Vector3D getStartPoint();
-    void setStartPoint(Vector3D startPoint);
-    Vector3D getEndPoint();
-    void setEndPoint(Vector3D endPoint);
+    inline double getWidth(void){ return _width; }
+    inline void setWidth(double width) { _width = width; }
+    inline Vector3D getStartPoint(){ return _startPoint; }
+    inline void setStartPoint(Vector3D startPoint){ _startPoint = startPoint; }
+    inline Vector3D getEndPoint(){ return _endPoint; }
+    inline void setEndPoint(Vector3D endPoint){ _endPoint = endPoint; }
 
 protected:
 private:
