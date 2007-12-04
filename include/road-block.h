@@ -1,6 +1,7 @@
 #ifndef ROAD_BLOCK_H
 #define ROAD_BLOCK_H
 
+#define ROAD_HEIGHT 0.4
 #include "vector-3d.h"
 #include "shape.h"
 #include "shape-part.h"

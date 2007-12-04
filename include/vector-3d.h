@@ -56,6 +56,12 @@ public:
     // Return the cross product
     return normal;
   }
+  
+  inline Vector3D crossProduct(const Vector3D& v) const
+  {
+      return produitVectoriel(v);
+  }
+  
   inline double getModule() const
   {
     return (double)sqrt(getX()*getX()+getY()*getY()+getZ()*getZ());

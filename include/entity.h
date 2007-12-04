@@ -21,9 +21,11 @@ public:
   inline Transform* getTransform() {return &_transform;}
 
 protected:
-private:
   Shape* _shape;
   Transform _transform;
+  
+private:
+
 };
 
 

@@ -22,7 +22,9 @@ public:
     {
         return _light;
     }
-
+    
+    virtual void render();
+    
 protected:
     virtual void initTrack();
     virtual void initTrackShape();
