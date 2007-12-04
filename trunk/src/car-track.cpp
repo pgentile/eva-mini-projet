@@ -73,3 +73,15 @@ void CarTrack::initTrackShape()
   setShape(shape);
 }
 
+
+void CarTrack::render()
+{
+    glPushMatrix();
+    _transform.apply();
+    if (_shape)
+    {
+        _shape->render();
+    }
+    glPopMatrix();
+}
+

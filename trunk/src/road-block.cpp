@@ -13,9 +13,36 @@ RoadBlock::~RoadBlock()
 
 void RoadBlock::render()
 {
-    // Renders a Road Block between StartPoint(xs,ys,zs) and EndPoint(xe,ye,ze)
+    // ---- Renders a Road Block between StartPoint(xs,ys,zs) and EndPoint(xe,ye,ze)   ----
+    
+    Vector3D rbVector       = endPoint - startPoint ;
+    Vector3D rbNormalVector = endPoint - startPoint ;
+    
+    rbVector.normalize();
+    
+    // Setting up Normal vector to roadBlock
+    rbNormalVector.normalize();
+    rbNormalVector.rotate( 0 , 0 , M_PI /2 );
+    
+    // Building Road Block Points
+    Vector3D widthVector    = rbVector.crossProduct( rbNormalVector ) * _width;
+    
+    Vector3D firstPoint  = _startPoint + widthVector + rbNormalVector * (ROAD_HEIGHT / 2);
+    Vector3D secondPoint = _startPoint - widthVector + rbNormalVector * (ROAD_HEIGHT / 2);
+    Vector3D thirdPoint  = _endPoint   - widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
+    Vector3D fourthPoint = _endPoint   + widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
+    
+    
     glBegin(GL_QUADS);
-        // TODO
+        glNormal3f(rbNormalVector.getX(),rbNormalVector.getY(),rbNormalVector.getZ());
+        glTexCoord2f(1,1);
+        glVertex3f( firstPoint.getX()  , firstPoint.getY()  , 0 );
+        glTexCoord2f(0,1);
+        glVertex3f( secondPoint.getX() , secondPoint.getY() , 0 );
+        glTexCoord2f(0,0);
+        glVertex3f( thirdPoint.getX()  , thirdPoint.getY()  , 0 );
+        glTexCoord2f(1,0);
+        glVertex3f( fourthPoint.getX() , fourthPoint.getY() , 0 );
     glEnd();     
 }
 
