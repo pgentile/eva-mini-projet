@@ -76,7 +76,7 @@ void CarTrack::initRoadBlocks()
     {
         Vector3D currentPoint = *it;
         Vector3D nextPoint    = *(it+1);
-        RoadBlock * tmpRB     = new RoadBlock(1.0, currentPoint, nextPoint);
+        RoadBlock * tmpRB     = new RoadBlock(4.0, currentPoint, nextPoint);
         _roadBlocks.push_back(tmpRB);
         ++it;
     }
@@ -103,6 +103,11 @@ void CarTrack::render()
     glPopMatrix();
     
     // Rendering Road Blocks
-    // TODO
+    std::vector< RoadBlock *>::iterator it;
+    for( it = _roadBlocks.begin() ; it != _roadBlocks.end() ; ++it )
+    {
+        (*it)->render();
+    }
+    
 }
 
