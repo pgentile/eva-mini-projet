@@ -15,8 +15,8 @@ void RoadBlock::render()
 {
     // ---- Renders a Road Block between StartPoint(xs,ys,zs) and EndPoint(xe,ye,ze)   ----
     
-    Vector3D rbVector       = endPoint - startPoint ;
-    Vector3D rbNormalVector = endPoint - startPoint ;
+    Vector3D rbVector       = _endPoint - _startPoint ;
+    Vector3D rbNormalVector = _endPoint - _startPoint ;
     
     rbVector.normalize();
     
