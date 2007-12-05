@@ -11,7 +11,8 @@ CarTrack::CarTrack(TrafficLight* light)
 }
 
 CarTrack::~CarTrack()
-{}
+{
+}
 
 void CarTrack::initTrack()
 {
@@ -62,6 +63,23 @@ void CarTrack::initTrack()
       std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
       _trackPoints.push_back(Vector3D(x,y,0));
     }
+    
+    initRoadBlocks();
+}
+
+void CarTrack::initRoadBlocks()
+{
+    // TODO
+    std::vector<Vector3D>::iterator it;
+    
+    for( it = _trackPoints.begin() ; it != _trackPoints.end() ; )
+    {
+        Vector3D currentPoint = *it;
+        Vector3D nextPoint    = *(it+1);
+        RoadBlock * tmpRB     = new RoadBlock(1.0, currentPoint, nextPoint);
+        _roadBlocks.push_back(tmpRB);
+        ++it;
+    }
 }
 
 void CarTrack::initTrackShape()
@@ -77,11 +95,14 @@ void CarTrack::initTrackShape()
 void CarTrack::render()
 {
     glPushMatrix();
-    _transform.apply();
-    if (_shape)
-    {
-        _shape->render();
-    }
+        _transform.apply();
+        if (_shape)
+        {
+            _shape->render();
+        }
     glPopMatrix();
+    
+    // Rendering Road Blocks
+    // TODO
 }
 

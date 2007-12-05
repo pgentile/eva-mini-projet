@@ -3,6 +3,7 @@
 
 #include "baseshapes.h"
 #include "traffic-light.h"
+#include "road-block.h"
 
 class CarTrack:public Entity
 {
@@ -27,8 +28,11 @@ public:
     
 protected:
     virtual void initTrack();
+    virtual void initRoadBlocks();
     virtual void initTrackShape();
 private:
+
+    std::vector<RoadBlock *> _roadBlocks;
     std::vector<Vector3D> _trackPoints;
     TrafficLight* _light;
 };

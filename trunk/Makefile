@@ -3,7 +3,7 @@ CC = g++
 INCDIR= ./include/
 #modifier le chemin pour l'emplacement ou est installé libnetwork
 LIBNETWORK_LIBS=-L ./lib -lnetwork
-CFLAGS= -I $(INCDIR) -Werror -Wall -ansi -pedantic
+CFLAGS= -g -I $(INCDIR) -Werror -Wall -ansi -pedantic
 
 #EVA_client files
 EVA_CLIENT_SOURCES= \
@@ -12,7 +12,7 @@ scene.cpp shape.cpp  texture.cpp \
 traffic-light.cpp car-entity.cpp car-track.cpp \
 steering-entity.cpp steering-system.cpp \
 steering-behavior.cpp flee-behavior.cpp separation-behavior.cpp arrive-behavior.cpp seek-behavior.cpp wander-behavior.cpp \
-vector-3d.cpp shape-part.cpp \
+vector-3d.cpp shape-part.cpp road-block.cpp \
 transform.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
 baseshapes.cpp camera.cpp entity.cpp
 EVA_CLIENT_OBJS=$(EVA_CLIENT_SOURCES:.cpp=.o)
