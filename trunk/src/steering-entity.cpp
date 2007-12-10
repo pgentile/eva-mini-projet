@@ -42,12 +42,13 @@ void SteeringEntity::update(double dt)
 
 void SteeringEntity::initShape()
 {
-    _steeringShape=new Shape();
-    ShapePart* part=new Axis();
+    _steeringShape=new AntShape();
+    /*ShapePart* part=new Axis();
     part->getTransform()->setScale(5,5,5);
     _steeringShape->addPart(part);
     part=new Sphere();
-    _steeringShape->addPart(part);
+    _steeringShape->addPart(part);*/
     setShape(_steeringShape);
+	
 }
 
