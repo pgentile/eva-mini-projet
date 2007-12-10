@@ -30,31 +30,32 @@ void CarEntity::update(double dt)
 	_arrive->setTarget(light->getTransform()->getPosition());
   	_arrive->setWeight(1.0);
   	_seek->setWeight(0.0);
+	_separation->setWeight(0.0);
   }
   else
   {
-      _seek->setWeight(1.0);
-      _arrive->setWeight(0.0);
-  }
-  //check if we are at the required point
-  Vector3D toTarget=_track->getPoint(_currentTarget)-
+    _separation->setWeight(0.5);
+    _seek->setWeight(1.0);
+    _arrive->setWeight(0.0);
+  
+  	//check if we are at the required point
+  	Vector3D toTarget=_track->getPoint(_currentTarget)-
     getTransform()->getPosition();
-  if (toTarget.getModule()<20.0)
+  	if (toTarget.getModule()<20.0)
     {
       _currentTarget++;
       if (_currentTarget==_track->getNbPoints())
-        {
-          _currentTarget=0;
-        }
-      ((SeekBehavior*)getBehavior(0))
-        ->setTarget(_track->getPoint(_currentTarget));
+      {
+        _currentTarget=0;
+      }
+      ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
     }
+  }
   SteeringEntity::update(dt);
   if (_camera)
-    {
-      //Update camera parameters
-      _camera->setPosition(getTransform()->getPosition()-3.0*getForward()+
-                           Vector3D(0,0,3.0));
-      _camera->setLookAt(getTransform()->getPosition()+3.0*getForward());
-    }
+  {
+    //Update camera parameters
+    _camera->setPosition(getTransform()->getPosition()-3.0*getForward()+Vector3D(0,0,3.0));
+    _camera->setLookAt(getTransform()->getPosition()+3.0*getForward());
+  }
 }

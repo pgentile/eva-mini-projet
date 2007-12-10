@@ -15,56 +15,49 @@ CarTrack::~CarTrack()
 }
 
 void CarTrack::initTrack()
-{
-  //circular track
-  //radius=500
-  double radius=50;
-  double xoffset=100;
+{  
+  double radius=100;
+  double xoffset=200;
   double yoffset=100;
   int i;
-  /*for (unsigned int i=1;i<360;i+=10)
-    {
-      double x=(RANDOM_NUMBER(0.0,10.0)+radius)*cos(i*M_PI/180)+xoffset;
-      double y=(RANDOM_NUMBER(0.0,10.0)+radius)*sin(i*M_PI/180)+yoffset;
-      std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
-      _trackPoints.push_back(Vector3D(x,y,RANDOM_NUMBER(0.0,20.0)));
-    }*/
 
-    for (i=120;i<360;i+=10)
-    {
-      double x=radius*cos(i*M_PI/180)+xoffset;
-      double y=radius*sin(i*M_PI/180)+yoffset;
-      std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
-      _trackPoints.push_back(Vector3D(x,y,0));
-    }
+  for (i=120;i<360;i+=10)
+  {
+    double x=radius*cos(i*M_PI/180)+xoffset;
+    double y=radius*sin(i*M_PI/180)+yoffset;
+    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    _trackPoints.push_back(Vector3D(x,y,0));
+  }
 	
-    for (i=1;i<60;i+=10)
-    {
-      double x=radius*cos(i*M_PI/180)+xoffset;
-      double y=radius*sin(i*M_PI/180)+yoffset;
-      std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
-      _trackPoints.push_back(Vector3D(x,y,0));
-    }
+  for (i=1;i<60;i+=10)
+  {
+    double x=radius*cos(i*M_PI/180)+xoffset;
+    double y=radius*sin(i*M_PI/180)+yoffset;
+    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    _trackPoints.push_back(Vector3D(x,y,0));
+  }
 
-    xoffset=100;
-    yoffset=200;
-    for (i=238;i>0;i-=10)
-    {
-      double x=radius*cos(i*M_PI/180)+xoffset;
-      double y=radius*sin(i*M_PI/180)+yoffset;
-      std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
-      _trackPoints.push_back(Vector3D(x,y,0));
-    }
+  _trackPoints.push_back(Vector3D(200,200,0));
 
-    for (i=360;i>300;i-=10)
-    {
-      double x=radius*cos(i*M_PI/180)+xoffset;
-      double y=radius*sin(i*M_PI/180)+yoffset;
-      std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
-      _trackPoints.push_back(Vector3D(x,y,0));
-    }
+  xoffset=200;
+  yoffset=300;
+  for (i=238;i>0;i-=10)
+  {
+    double x=radius*cos(i*M_PI/180)+xoffset;
+    double y=radius*sin(i*M_PI/180)+yoffset;
+    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    _trackPoints.push_back(Vector3D(x,y,0));
+  }
+
+  for (i=360;i>300;i-=10)
+  {
+    double x=radius*cos(i*M_PI/180)+xoffset;
+    double y=radius*sin(i*M_PI/180)+yoffset;
+    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    _trackPoints.push_back(Vector3D(x,y,0));
+  }
     
-    initRoadBlocks();
+  initRoadBlocks();
 }
 
 void CarTrack::initRoadBlocks()
@@ -72,13 +65,23 @@ void CarTrack::initRoadBlocks()
     // TODO
     std::vector<Vector3D>::iterator it;
     
-    for( it = _trackPoints.begin() ; it != _trackPoints.end() ; )
-    {
-        Vector3D currentPoint = *it;
-        Vector3D nextPoint    = *(it+1);
-        RoadBlock * tmpRB     = new RoadBlock(4.0, currentPoint, nextPoint);
-        _roadBlocks.push_back(tmpRB);
-        ++it;
+    for( it = _trackPoints.begin() ; it != _trackPoints.end(); )
+    {	
+		Vector3D currentPoint = *it;
+		if(it!=	_trackPoints.end()- 1)
+		{       		
+       		Vector3D nextPoint = *(it+1);
+       		RoadBlock * tmpRB = new RoadBlock(4.0, currentPoint, nextPoint);
+       		_roadBlocks.push_back(tmpRB);
+       		++it;
+		}
+		else
+		{
+			Vector3D firstPoint = *_trackPoints.begin();
+			RoadBlock * tmpRB = new RoadBlock(4.0, currentPoint, firstPoint);
+       		_roadBlocks.push_back(tmpRB);
+       		++it;
+		}
     }
 }
 

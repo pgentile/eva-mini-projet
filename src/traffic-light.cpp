@@ -20,7 +20,7 @@ void TrafficLight::update(double dt)
     }
   else
     {
-      getShape()->getPart(0)->getMaterial()->setAmbient(1.0,1.0,1.0);
+      getShape()->getPart(0)->getMaterial()->setAmbient(0.0,1.0,0.0);
     }
 }
 
@@ -28,8 +28,8 @@ void TrafficLight::initShape()
 {
   Shape* shape=new Shape();
   ShapePart* part=new Teapot();
-  part->getTransform()->setScale(10.0,10.0,10.0);
-  shape->addPart(part);
+  part->getTransform()->setScale(5.0,5.0,5.0);
+  shape->addPart(part);	
   setShape(shape);
 }
 
