@@ -21,6 +21,7 @@
 #include "traffic-light.h"
 #include "car-track.h"
 #include "car-entity.h"
+#include "wall.h"
 
 Camera* camera;
 unsigned int current_camera=0;
@@ -294,11 +295,15 @@ void init()
   ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
                                        RANDOM_NUMBER(0,-300),
                                        0);
+                                       
+  Wall* wall = new Wall(Vector3D(0.0, 0.0, 0.0), Vector3D(5.0, 7.0, 0.0));
+  scene.addEntity(wall);
+                                       
   Camera* cam=new Camera();
   scene.addCamera(cam);
   ent->setCamera(cam);
   scene.addEntity(ent);
-  for (unsigned int i=0;i<50;i++)
+  for (unsigned int i=0;i<10;i++)
     {
       CarEntity* ent=new CarEntity(&steeringSystem,track);
       ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
