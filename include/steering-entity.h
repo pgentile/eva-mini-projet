@@ -73,7 +73,7 @@ public:
     double ya=-asin(dir.getZ())*180/M_PI;
     double za=atan2(dir.getY(),dir.getX())*180/M_PI;
     //La direction seule ne permet pas de
-    //déterminer le roll on travaille dans le plan
+    //dï¿½erminer le roll on travaille dans le plan
     //pour simplifier les calculs donc on maintient
     //la rotation autour de l'axe X
     double xa=getTransform()->getOrientation().getX();
@@ -106,9 +106,18 @@ public:
                   orientation.getZ()*M_PI/180);
     return result;
   }
+  inline unsigned int getTarget()
+  {
+    return _currentTarget;
+  }
+  inline void setTarget(unsigned int pos)
+  {
+      _currentTarget=pos;
+  }
 
 protected:
   void initShape();
+  unsigned int _currentTarget;
 private:
   static Shape* _steeringShape;
   unsigned int _id;

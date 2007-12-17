@@ -1,7 +1,7 @@
 #global parameters
 CC = g++
 INCDIR= ./include/
-#modifier le chemin pour l'emplacement ou est installé libnetwork
+#modifier le chemin pour l'emplacement ou est installï¿½libnetwork
 LIBNETWORK_LIBS=-L ./lib -lnetwork
 CFLAGS= -g -I $(INCDIR) -Werror -Wall -ansi -pedantic
 
@@ -14,7 +14,7 @@ steering-entity.cpp steering-system.cpp \
 steering-behavior.cpp stay-on-track-behavior.cpp flee-behavior.cpp separation-behavior.cpp arrive-behavior.cpp seek-behavior.cpp wander-behavior.cpp \
 vector-3d.cpp shape-part.cpp road-block.cpp \
 transform.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
-baseshapes.cpp camera.cpp entity.cpp wall.cpp
+baseshapes.cpp camera.cpp entity.cpp wall.cpp priority-behavior.cpp
 EVA_CLIENT_OBJS=$(EVA_CLIENT_SOURCES:.cpp=.o)
 EVA_CLIENT_LIBS=-lm -L/usr/X11R6/lib -lglut -lGL -lGLU -lX11 -lXi -lXmu \
 	$(LIBNETWORK_LIBS)
