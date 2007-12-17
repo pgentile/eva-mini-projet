@@ -34,7 +34,7 @@ GL_TEST_LIBS=-lm -L/usr/X11R6/lib -lglut -lGL -lGLU -lX11 -lXi -lXmu \
 	$(LIBNETWORK_LIBS)
 
 #network_test files
-NETWORK_TEST_SOURCES=network_test.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp
+NETWORK_TEST_SOURCES=network_test.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp vector-3d.cpp
 NETWORK_TEST_OBJS=$(NETWORK_TEST_SOURCES:.cpp=.o)
 NETWORK_TEST_LIBS=$(LIBNETWORK_LIBS)
 

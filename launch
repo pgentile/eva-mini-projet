@@ -10,5 +10,5 @@ fi
 export LD_LIBRARY_PATH=./lib:$LD_LIBRARY_PATH
 
 # Exécution de l'application
-./$1
+./$1 $2 $3 $4
 
