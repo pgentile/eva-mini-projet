@@ -20,7 +20,7 @@ public:
   {
     //Effectuer le traitement des commandes recues ici
     //sock est le client qui nous a envoyé le texte
-    std::cout<<"Received: "<<text<<std::endl;
+    std::cout << "Received: " << text << std::endl;
     return true;
   }
 

@@ -95,7 +95,7 @@ void TCPTextServer::step()
   for (unsigned int i=0;i<_clients.size();i++)
     {
       //if there's data on the socket
-      while (_clients[i]->isReady())
+      if (_clients[i]->isReady())
         {
           TCPTextSocket* sock=_clients[i];
           std::string command;
