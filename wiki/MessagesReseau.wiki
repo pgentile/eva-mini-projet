@@ -10,6 +10,11 @@
  * `YOUR_ID_IS id` : ID du client assigné par le serveur
  * `CONNECT_ME` : demande de connexion au serveur d'un client
 
+== Informations serveur et clients ==
+
+ * `ARE_YOU_ALIVE` : le serveur demande à un client s'il est en vie.
+ * `I_AM_ALIVE client_id` : le client est encore en vie, et l'annonce au serveur.
+
 == Gestion des entités ==
 
  * `ADD_ENTITY client_id entity_id time position speed acceleration` : ajout d'une entité par un client, transmise au serveur, puis aux autres clients
