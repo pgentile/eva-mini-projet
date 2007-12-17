@@ -291,6 +291,7 @@ void init()
   //Car track
   CarTrack* track=new CarTrack(trafficLight);
   scene.addEntity(track);
+  
   CarEntity* ent=new CarEntity(&steeringSystem,track);
   ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
                                        RANDOM_NUMBER(0,-300),
@@ -304,13 +305,13 @@ void init()
   ent->setCamera(cam);
   scene.addEntity(ent);
   for (unsigned int i=0;i<10;i++)
-    {
+  {
       CarEntity* ent=new CarEntity(&steeringSystem,track);
       ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
                                        RANDOM_NUMBER(0,-300),
                                        0);
       scene.addEntity(ent);
-    }
+  }
 
 //   //Add our steering entities
 //   for (unsigned int i=0;i<1;i++)

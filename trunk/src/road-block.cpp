@@ -32,8 +32,8 @@ void RoadBlock::render()
     // Building Road Block Points
     Vector3D widthVector    = rbVector.crossProduct( rbNormalVector ) * _width;
     
-    Vector3D firstPoint  = _startPoint + widthVector + rbNormalVector * (ROAD_HEIGHT / 2);
-    Vector3D secondPoint = _startPoint - widthVector + rbNormalVector * (ROAD_HEIGHT / 2);
+    Vector3D firstPoint  = _startPoint + widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
+    Vector3D secondPoint = _startPoint - widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
     Vector3D thirdPoint  = _endPoint   - widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
     Vector3D fourthPoint = _endPoint   + widthVector - rbNormalVector * (ROAD_HEIGHT / 2);
     

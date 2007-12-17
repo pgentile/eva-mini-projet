@@ -4,10 +4,14 @@
 CarTrack::CarTrack(TrafficLight* light)
 {
   _light=light;
+  _trackWidth = 10.0 ; // Largeur du circuit
+  
   initTrack();
   initTrackShape();
   //set the light position to the first track point
   _light->getTransform()->setPosition(_trackPoints[0]);
+  
+
 }
 
 CarTrack::~CarTrack()
@@ -71,14 +75,14 @@ void CarTrack::initRoadBlocks()
 		if(it!=	_trackPoints.end()- 1)
 		{       		
        		Vector3D nextPoint = *(it+1);
-       		RoadBlock * tmpRB = new RoadBlock(4.0, currentPoint, nextPoint);
+       		RoadBlock * tmpRB = new RoadBlock(_trackWidth, currentPoint, nextPoint);
        		_roadBlocks.push_back(tmpRB);
        		++it;
 		}
 		else
 		{
 			Vector3D firstPoint = *_trackPoints.begin();
-			RoadBlock * tmpRB = new RoadBlock(4.0, currentPoint, firstPoint);
+			RoadBlock * tmpRB = new RoadBlock(_trackWidth, currentPoint, firstPoint);
        		_roadBlocks.push_back(tmpRB);
        		++it;
 		}

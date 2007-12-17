@@ -11,7 +11,7 @@ light.cpp load_texture.cpp eva_client.cpp material.cpp \
 scene.cpp shape.cpp  texture.cpp \
 traffic-light.cpp car-entity.cpp car-track.cpp \
 steering-entity.cpp steering-system.cpp \
-steering-behavior.cpp flee-behavior.cpp separation-behavior.cpp arrive-behavior.cpp seek-behavior.cpp wander-behavior.cpp \
+steering-behavior.cpp stay-on-track-behavior.cpp flee-behavior.cpp separation-behavior.cpp arrive-behavior.cpp seek-behavior.cpp wander-behavior.cpp \
 vector-3d.cpp shape-part.cpp road-block.cpp \
 transform.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
 baseshapes.cpp camera.cpp entity.cpp wall.cpp
