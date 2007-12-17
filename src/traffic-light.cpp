@@ -4,7 +4,7 @@
 TrafficLight::TrafficLight()
 {
   _stop=false;
-  _distance=30.0;
+  _distance = 30.0;
   initShape();
 }
 

@@ -5,6 +5,7 @@
 #include "steering-behavior.h"
 #include "seek-behavior.h"
 #include "arrive-behavior.h"
+#include "stay-on-track-behavior.h"
 #include "separation-behavior.h"
 #include "car-track.h"
 
@@ -16,9 +17,15 @@ public:
   virtual ~CarEntity();
 
   virtual void update(double dt);
+  virtual Vector3D getCurrentTarget();
+  virtual Vector3D getPreviousTarget();
   inline void setCamera(Camera* camera)
   {
     _camera=camera;
+  }
+  inline CarTrack* getTrack()
+  {
+      return _track;
   }
 protected:
 private:
@@ -29,6 +36,7 @@ private:
   SeekBehavior* _seek;
   ArriveBehavior* _arrive;
   SeparationBehavior* _separation;
+  StayOnTrackBehavior* _stayOnTrack;
 };
 
 

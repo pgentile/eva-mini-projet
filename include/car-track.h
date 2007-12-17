@@ -15,6 +15,12 @@ public:
     {
         return _trackPoints[index];
     }
+    
+    inline Vector3D getPreviousPoint(unsigned int index) const
+    {
+        return _trackPoints[index-1];
+    }
+    
     inline unsigned int getNbPoints() const
     {
         return _trackPoints.size();
@@ -22,6 +28,11 @@ public:
     inline TrafficLight* getTrafficLight()
     {
         return _light;
+    }
+    
+    inline double getTrackWidth()
+    {
+        return _trackWidth;
     }
     
     virtual void render();
@@ -32,6 +43,7 @@ protected:
     virtual void initTrackShape();
 private:
 
+    double _trackWidth;
     std::vector<RoadBlock *> _roadBlocks;
     std::vector<Vector3D> _trackPoints;
     TrafficLight* _light;
