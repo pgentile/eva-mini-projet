@@ -7,6 +7,7 @@
 #include "arrive-behavior.h"
 #include "stay-on-track-behavior.h"
 #include "separation-behavior.h"
+#include "priority-behavior.h"
 #include "car-track.h"
 
 class CarEntity:public SteeringEntity
@@ -31,11 +32,12 @@ protected:
 private:
   Camera* _camera;
   CarTrack* _track;
-  unsigned int _currentTarget;
+  
   //behaviors                                    
   SeekBehavior* _seek;
   ArriveBehavior* _arrive;
   SeparationBehavior* _separation;
+  PriorityBehavior* _priority;
   StayOnTrackBehavior* _stayOnTrack;
 };
 
