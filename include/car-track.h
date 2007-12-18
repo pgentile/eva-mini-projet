@@ -18,7 +18,8 @@ public:
     
     inline Vector3D getPreviousPoint(unsigned int index) const
     {
-        return _trackPoints[index-1];
+        if( index == 0 ) return _trackPoints[_trackPoints.size() - 1];
+        else return _trackPoints[ index - 1 ];
     }
     
     inline unsigned int getNbPoints() const

@@ -16,7 +16,7 @@ CarEntity::CarEntity(SteeringSystem* system,
   addBehavior(_arrive);
   //addBehavior(_separation);
   addBehavior(_stayOnTrack);
-  addBehavior(_priority);
+  //addBehavior(_priority);
   _priority->setTarget(_track->getPoint(30));
   _seek->setTarget(_track->getPoint(_currentTarget));
   _arrive->setWeight(0.0);
@@ -52,14 +52,7 @@ void CarEntity::update(double dt)
   }
   else
   {
-    if(_currentTarget==30)
-    {
-      _priority->setWeight(1.0);
-      _seek->setWeight(0.0);
-    
-    }
-    /*
-    else{
+   
       _priority->setWeight(0.0);
       _separation->setWeight(0.0);
       _seek->setWeight(1.0);
@@ -77,8 +70,8 @@ void CarEntity::update(double dt)
         }
         ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
       }
-    }
-    */
+    
+    /*
     else
     {
         _separation->setWeight(0.5);
@@ -94,7 +87,7 @@ void CarEntity::update(double dt)
             ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
         }
     }
-    
+    */
     
     SteeringEntity::update(dt);
     
