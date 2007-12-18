@@ -56,7 +56,9 @@ void CarEntity::update(double dt)
     {
       _priority->setWeight(1.0);
       _seek->setWeight(0.0);
+    
     }
+    /*
     else{
       _priority->setWeight(0.0);
       _separation->setWeight(0.0);
@@ -76,6 +78,7 @@ void CarEntity::update(double dt)
         ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
       }
     }
+    */
     else
     {
         _separation->setWeight(0.5);
@@ -101,4 +104,5 @@ void CarEntity::update(double dt)
         _camera->setPosition(getTransform()->getPosition()-3.0*getForward()+Vector3D(0,0,3.0));
         _camera->setLookAt(getTransform()->getPosition()+3.0*getForward());
     }
+  }
 }
