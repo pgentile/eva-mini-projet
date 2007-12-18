@@ -29,7 +29,7 @@ void CarTrack::initTrack()
   {
     double x=radius*cos(i*M_PI/180)+xoffset;
     double y=radius*sin(i*M_PI/180)+yoffset;
-    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    // std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
     _trackPoints.push_back(Vector3D(x,y,0));
   }
 	
@@ -37,7 +37,7 @@ void CarTrack::initTrack()
   {
     double x=radius*cos(i*M_PI/180)+xoffset;
     double y=radius*sin(i*M_PI/180)+yoffset;
-    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    // std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
     _trackPoints.push_back(Vector3D(x,y,0));
   }
 
@@ -49,7 +49,7 @@ void CarTrack::initTrack()
   {
     double x=radius*cos(i*M_PI/180)+xoffset;
     double y=radius*sin(i*M_PI/180)+yoffset;
-    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    // std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
     _trackPoints.push_back(Vector3D(x,y,0));
   }
 
@@ -57,7 +57,7 @@ void CarTrack::initTrack()
   {
     double x=radius*cos(i*M_PI/180)+xoffset;
     double y=radius*sin(i*M_PI/180)+yoffset;
-    std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
+    // std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
     _trackPoints.push_back(Vector3D(x,y,0));
   }
     
