@@ -39,10 +39,10 @@ void RoadBlock::render()
     
     #ifdef RB_DEBUG
         std::cout << "-----------"  << std::endl;
-        std::cout << "First Point = " << firstPoint << std::endl;
-        std::cout << "Second Point = " << secondPoint << std::endl;
-        std::cout << "Third Point = " << thirdPoint << std::endl;
-        std::cout << "Fourth Point = " << fourthPoint << std::endl;
+        std::cout << "RB : First Point = " << firstPoint << std::endl;
+        std::cout << "RB : Second Point = " << secondPoint << std::endl;
+        std::cout << "RB : Third Point = " << thirdPoint << std::endl;
+        std::cout << "RB : Fourth Point = " << fourthPoint << std::endl;
     #endif
     
     glBegin(GL_QUADS);

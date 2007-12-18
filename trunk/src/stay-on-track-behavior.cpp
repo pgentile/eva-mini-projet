@@ -20,7 +20,7 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
     Vector3D ePTarget = e->getPreviousTarget();
     Vector3D eForward = e->getForward(); // Entity Orientation
     double tWidth     = e->getTrack()->getTrackWidth();
-    Vector3D sotForce(0.0,0.0,0.0);
+    Vector3D sotForce;
     Vector3D nextPosition    = ePos + 0.1 * e->getVelocity();
   
     
@@ -63,12 +63,12 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
     
         
     
-    #ifdef SOT_DEBUG
+    #ifndef SOT_DEBUG
     {
-        std::cout << "Width Vector = " << widthVector << std::endl;
-        std::cout << "-- SOT Force  : " << sotForce.getX() << "*x + " << sotForce.getY() << "*y + " << sotForce.getZ() << " = 0" << std::endl;
-        std::cout << "-- Equation du mur droit  : " << rightWallA << "*x + " << rightWallB << "*y + " << rightWallC << " = 0" << std::endl;
-        std::cout << "-- Equation du mur gauche : " << leftWallA  << "*x + " << leftWallB  << "*y + " << leftWallC  << " = 0" << std::endl;
+        //std::cout << "SOTB : Track width = " << tWidth << " ; Width Vector = " << widthVector << std::endl;
+        //std::cout << "SOTB : -- SOT Force  : " << sotForce.getX() << "*x + " << sotForce.getY() << "*y + " << sotForce.getZ() << " = 0" << std::endl;
+        //std::cout << "SOTB : -- Equation du mur droit  : " << rightWallA << "*x + " << rightWallB << "*y + " << rightWallC << " = 0" << std::endl;
+        //std::cout << "SOTB : -- Equation du mur gauche : " << leftWallA  << "*x + " << leftWallB  << "*y + " << leftWallC  << " = 0" << std::endl;
     }
     #endif
     

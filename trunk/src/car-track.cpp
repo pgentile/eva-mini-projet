@@ -66,7 +66,6 @@ void CarTrack::initTrack()
 
 void CarTrack::initRoadBlocks()
 {
-    // TODO
     std::vector<Vector3D>::iterator it;
     
     for( it = _trackPoints.begin() ; it != _trackPoints.end(); )
