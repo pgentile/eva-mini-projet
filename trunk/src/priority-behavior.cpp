@@ -29,7 +29,7 @@ Vector3D PriorityBehavior::compute(SteeringEntity* entity){
     }
   }
   Vector3D toTarget =_target-entity->getTransform()->getPosition();
-  std::cout<<crossingEntity<<std::endl;
+  //std::cout<<crossingEntity<<std::endl;
   if(crossingEntity==NULL)
   {
     Vector3D desiredVelocity= toTarget*

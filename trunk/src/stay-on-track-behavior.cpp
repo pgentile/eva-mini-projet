@@ -29,7 +29,6 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
     Vector3D rbVector = (eTarget - ePTarget);
     rbVector.normalize();
     Vector3D widthVector          = rbVector.crossProduct( rbNormalVector ) * tWidth ;
-    // std::cout << "Width Vector = " << widthVector << std::endl;
     Vector3D rightWallStartPoint  = ePTarget  + widthVector  ;
     Vector3D rightWallEndPoint    = eTarget   + widthVector  ;
     Vector3D leftWallStartPoint   = ePTarget  - widthVector  ;
@@ -65,9 +64,12 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
         
     
     #ifndef SOT_DEBUG
+    {
+         // std::cout << "Width Vector = " << widthVector << std::endl;
         //std::cout << "-- SOT Force  : " << sotForce.getX() << "*x + " << sotForce.getY() << "*y + " << sotForce.getZ() << " = 0" << std::endl;
         // std::cout << "-- Equation du mur droit  : " << rightWallA << "*x + " << rightWallB << "*y + " << rightWallC << " = 0" << std::endl;
         // std::cout << "-- Equation du mur gauche : " << leftWallA  << "*x + " << leftWallB  << "*y + " << leftWallC  << " = 0" << std::endl;
+    }
     #endif
     
     return sotForce;
