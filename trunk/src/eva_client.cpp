@@ -223,14 +223,14 @@ void Draw(void)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
-  /*  On demande a la machine OpenGL de présenter l'image à lécran*/
+  /*  On demande a la machine OpenGL de prï¿½senter l'image ï¿½ lï¿½cran*/
   glutSwapBuffers();
 }
 
 void Idle(void)
 {
 
-  /* On fait vivre les entités */
+  /* On fait vivre les entitï¿½s */
   scene.update(dt);
 
   /* On demande le rafraichissement de l'affichage*/
@@ -248,7 +248,7 @@ void init()
   glClearDepth(1.0);             /* On remplit le buffer de profondeur
                                     avec la valeur 1.0 */
   glEnable(GL_DEPTH_TEST);       /* On active le test de profondeur */
-  glEnable(GL_CULL_FACE);        /* N'afficher que les facettes décrites
+  glEnable(GL_CULL_FACE);        /* N'afficher que les facettes dï¿½crites
                                     dans un certain ordre */
   glFrontFace(GL_CCW);           /* Cet ordre est le sens trigonometrique
                                     (inverse des aiguilles d'une montre) */
@@ -261,7 +261,7 @@ void init()
   camera=new Camera();
   //ajout camera
   scene.addCamera(camera);
-  //on active la lumière d'ambiance
+  //on active la lumiï¿½re d'ambiance
   global.on();
   global.setDirection(0,0,1);
   global.setAmbient(0.0,0.0,0.0);

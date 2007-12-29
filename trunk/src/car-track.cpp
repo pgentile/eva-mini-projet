@@ -4,7 +4,7 @@
 CarTrack::CarTrack(TrafficLight* light)
 {
   _light=light;
-  _trackWidth = 10.0 ; // Largeur du circuit
+  _trackWidth = 6.0 ; // Largeur du circuit
   
   initTrack();
   initTrackShape();
@@ -60,7 +60,7 @@ void CarTrack::initTrack()
     // std::cout<<"x= "<<x<<" ; y= "<<y<<std::endl;
     _trackPoints.push_back(Vector3D(x,y,0));
   }
-    
+
   initRoadBlocks();
 }
 

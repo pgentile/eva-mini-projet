@@ -14,10 +14,10 @@ CarEntity::CarEntity(SteeringSystem* system,
   _stayOnTrack = new StayOnTrackBehavior();
   addBehavior(_seek);
   addBehavior(_arrive);
-  //addBehavior(_separation);
+  addBehavior(_separation);
   addBehavior(_stayOnTrack);
   //addBehavior(_priority);
-  _priority->setTarget(_track->getPoint(30));
+  //_priority->setTarget(_track->getPoint(30));
   _seek->setTarget(_track->getPoint(_currentTarget));
   _arrive->setWeight(0.0);
   _priority->setWeight(0.0);
@@ -33,7 +33,7 @@ Vector3D CarEntity::getCurrentTarget()
 
 Vector3D CarEntity::getPreviousTarget()
 {
-    return _track->getPoint(_currentTarget - 1);
+    return _track->getPreviousPoint(_currentTarget );
 }
 
 void CarEntity::update(double dt)
@@ -54,19 +54,23 @@ void CarEntity::update(double dt)
   {
    
       _priority->setWeight(0.0);
-      _separation->setWeight(0.0);
+      _separation->setWeight(0.5);
       _seek->setWeight(1.0);
       _arrive->setWeight(0.0);
     
   	//check if we are at the required point
       Vector3D toTarget=_track->getPoint(_currentTarget)-
       getTransform()->getPosition();
-      if (toTarget.getModule()<20.0)
+      if (toTarget.getModule()<10.0)
       {
-        _currentTarget++;
-        if (_currentTarget==_track->getNbPoints())
+        
+        if (_currentTarget== (_track->getNbPoints() - 1  ))
         {
           _currentTarget=0;
+        }
+        else
+	{
+	_currentTarget++;
         }
         ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
       }
