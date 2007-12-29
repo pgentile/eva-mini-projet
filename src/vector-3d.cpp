@@ -84,7 +84,7 @@ Vector3D& Vector3D::operator=(const Vector3D& v)
 
 void Vector3D::display(std::ostream& s) const
 {
-  s<<"("<<_x<<","<<_y<<","<<_z<<")"<<std::endl;
+  s<<"("<<_x<<","<<_y<<","<<_z<<")";
 }
 
 
