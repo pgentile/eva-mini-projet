@@ -81,10 +81,30 @@ public:
         setZ(getZ()/mag);
       }
   }
-  inline double getAngle(const Vector3D& v) const
-  {
-    return (acos(this->produitScalaire(v)));
-  }
+inline double operator*(const Vector3D& v) const{
+    return getX() * v.getX() + getY() * v.getY() + getZ() * v.getZ();
+}
+
+
+
+inline double getAngle ( const Vector3D& v ) const
+{
+    //return ( acos ( this->produitScalaire ( v ) ) );
+    double vDot = (*this)*(v) / ( this->getModule()*v.getModule());
+    if( vDot < -1.0) vDot = -1.0;
+    if( vDot >  1.0) vDot =  1.0;
+    double dir=-1.0;
+    if(this->produitVectoriel(v).getZ()>=0.0){
+        dir=1.0;
+    }
+    return acos(vDot)*dir;
+}
+
+
+//   inline double getAngle(const Vector3D& v) const
+//   {
+//     return (acos(this->produitScalaire(v)));
+//   }
   inline bool approximate(const Vector3D& v,double error)
   {
     //cout<<*this<<endl;
