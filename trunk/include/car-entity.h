@@ -14,7 +14,7 @@ class CarEntity:public SteeringEntity
 {
 public:
   CarEntity(SteeringSystem* system,
-            CarTrack* track);
+            CarTrack* track, unsigned int currentTarget);
   virtual ~CarEntity();
 
   virtual void update(double dt);
@@ -33,6 +33,14 @@ private:
   Camera* _camera;
   CarTrack* _track;
   
+  void _securityTest(SteeringEntity* nearestEntity, Vector3D target);
+  std::vector<SteeringEntity*> getNearEntities(double minDist,double maxDist, double minAngleDeg, double maxAngleDeg);
+  std::vector<SteeringEntity*> getNearEntities(void);
+  SteeringEntity* getNearestEntity(std::vector<SteeringEntity*> nearEntities);
+
+  bool _securityOn;
+  Vector3D _oldTarget;
+
   //behaviors                                    
   SeekBehavior* _seek;
   ArriveBehavior* _arrive;

@@ -3,7 +3,7 @@ CC = g++
 INCDIR= ./include/
 #modifier le chemin pour l'emplacement ou est install�libnetwork
 LIBNETWORK_LIBS=-L ./lib -lnetwork
-CFLAGS= -g -I $(INCDIR) -Werror -Wall -ansi -pedantic
+CFLAGS= -g -I $(INCDIR) -Wall -ansi -pedantic
 
 #EVA_client files
 EVA_CLIENT_SOURCES= \
