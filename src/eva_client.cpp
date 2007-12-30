@@ -292,10 +292,18 @@ void init()
   CarTrack* track=new CarTrack(trafficLight);
   scene.addEntity(track);
   
-  CarEntity* ent=new CarEntity(&steeringSystem,track);
-  ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
-                                       RANDOM_NUMBER(0,-300),
-                                       0);
+//   CarEntity* ent=new CarEntity(&steeringSystem,track);
+//   ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
+//                                        RANDOM_NUMBER(0,-300),
+//                                        0);
+
+  CarEntity* ent=new CarEntity(&steeringSystem,track, 0);
+  ent->setTarget(0); // on place la voiture sur le premier point du circuit
+  Vector3D pos = ent->getTrack()->getPoint(0);
+  ent->getTransform()->setPosition(pos.getX(),
+                                       pos.getY(),
+                                       0);
+
                                        
   Wall* wall = new Wall(Vector3D(0.0, 0.0, 0.0), Vector3D(5.0, 7.0, 0.0));
   scene.addEntity(wall);
@@ -306,11 +314,18 @@ void init()
   scene.addEntity(ent);
   for (unsigned int i=0;i<10;i++)
   {
-      CarEntity* ent=new CarEntity(&steeringSystem,track);
-      ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
-                                       RANDOM_NUMBER(0,-300),
-                                       0);
-      scene.addEntity(ent);
+//       CarEntity* ent=new CarEntity(&steeringSystem,track);
+//       ent->getTransform()->setPosition(RANDOM_NUMBER(0,-300),
+//                                        RANDOM_NUMBER(0,-300),
+//                                        0);
+//       scene.addEntity(ent);
+    CarEntity* ent=new CarEntity(&steeringSystem,track, i+1);
+    ent->setTarget(i+1);
+    Vector3D pos = ent->getTrack()->getPoint(i+1);
+    ent->getTransform()->setPosition(pos.getX(),
+                                       pos.getY(),
+                                       0);
+    scene.addEntity(ent);
   }
 
 //   //Add our steering entities

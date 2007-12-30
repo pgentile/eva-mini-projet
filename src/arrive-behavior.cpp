@@ -3,7 +3,7 @@
 
 ArriveBehavior::ArriveBehavior()
 {
-  _decelerationFactor = 3.0;
+  _decelerationFactor = 10.0;
 }
 
 ArriveBehavior::~ArriveBehavior()
@@ -19,7 +19,7 @@ Vector3D ArriveBehavior::compute(SteeringEntity* entity)
         double speed = dist / _decelerationFactor;
         speed = MIN(speed,entity->getMaxVelocity());
         Vector3D desiredVelocity = toTarget*speed / dist;
-        return (desiredVelocity  - entity->getVelocity());
+        return (desiredVelocity  - (entity->getVelocity()) * 30.0);
     }
     
     return Vector3D(0,0,0);
