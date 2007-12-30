@@ -25,7 +25,6 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
     double tWidth     = e->getTrack()->getTrackWidth();
     Vector3D sotForce;
     Vector3D nextPosition    = ePos + Scene::currentDt_ * e->getVelocity();
-   
     
     // Calculating Wall Points
     Vector3D rbNormalVector(0.,0.,-1.);
