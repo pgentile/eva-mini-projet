@@ -94,9 +94,8 @@ SteeringEntity* CarEntity::getNearestEntity(std::vector<SteeringEntity*> nearEnt
 void CarEntity::_securityTest(SteeringEntity* nearestEntity, Vector3D target)
 {
     _securityOn = false;
-
-    if (nearestEntity != NULL) {
-        Vector3D position = this->getTransform()->getPosition();
+    if (nearestEntity != (SteeringEntity*)0 ) {
+        Vector3D position = getTransform()->getPosition();
         Vector3D nearestEntityPosition = nearestEntity->getTransform()->getPosition();
         Vector3D toEntity = nearestEntityPosition - position;
 
@@ -124,6 +123,7 @@ void CarEntity::update(double dt)
 {
   // Detection des entites et de l'entite la plus proche
   std::vector<SteeringEntity*> nearEntities = getNearEntities(/*0.0, 20.0, -90.0, 90.0*/);
+  std::cout << "print a mettre sinon segfault (nb: trouver une meilleure solution)" << std::endl;
   SteeringEntity* nearestEntity = getNearestEntity(nearEntities);
 
   //check the traffic light
