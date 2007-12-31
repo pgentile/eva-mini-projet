@@ -76,7 +76,7 @@ std::vector<SteeringEntity*> CarEntity::getNearEntities()
 
 SteeringEntity* CarEntity::getNearestEntity(std::vector<SteeringEntity*> nearEntities)
 {
-    SteeringEntity* nearestEntity;
+    SteeringEntity* nearestEntity = (SteeringEntity*)0;
     double distance = 1000.0;
     Vector3D position = this->getTransform()->getPosition();
 
@@ -121,51 +121,49 @@ Vector3D CarEntity::getPreviousTarget()
 
 void CarEntity::update(double dt)
 {
-  // Detection des entites et de l'entite la plus proche
-  std::vector<SteeringEntity*> nearEntities = getNearEntities(/*0.0, 20.0, -90.0, 90.0*/);
-  std::cout << "print a mettre sinon segfault (nb: trouver une meilleure solution)" << std::endl;
-  SteeringEntity* nearestEntity = getNearestEntity(nearEntities);
-
-  //check the traffic light
-  TrafficLight* light=_track->getTrafficLight();
-  double light_dist=(getTransform()->getPosition()- light->getTransform()->getPosition()).getModule();
-  
-  if ((light->isStop())&&(light_dist<light->getDistance()) && this->getTarget() == 0)
-  {
-        // TrafficLight is On
-	_arrive->setTarget(light->getTransform()->getPosition());
-  	_arrive->setWeight(1.0);
-  	_seek->setWeight(0.0);
-	_separation->setWeight(0.0);
-    // Distance de securite
-    _securityTest(nearestEntity, light->getTransform()->getPosition());
-  }
-  else
-  {
-   
-      _priority->setWeight(0.0);
-      _separation->setWeight(0.5);
-      _seek->setWeight(1.0);
-      _arrive->setWeight(0.0);
+    // Detection des entites et de l'entite la plus proche
+    std::vector<SteeringEntity*> nearEntities = getNearEntities(/*0.0, 20.0, -90.0, 90.0*/);
+    SteeringEntity* nearestEntity = getNearestEntity(nearEntities);
     
-  	//check if we are at the required point
-      Vector3D toTarget=_track->getPoint(_currentTarget)-
-      getTransform()->getPosition();
-      if (toTarget.getModule()<10.0)
-      {
+    //check the traffic light
+    TrafficLight* light=_track->getTrafficLight();
+    double light_dist=(getTransform()->getPosition()- light->getTransform()->getPosition()).getModule();
+    
+    if ( (light->isStop())&&(light_dist<light->getDistance()) && this->getTarget() == 0)
+    {
+        // TrafficLight is On
+        _arrive->setTarget(light->getTransform()->getPosition());
+        _arrive->setWeight(1.0);
+        _seek->setWeight(0.0);
+        _separation->setWeight(0.0);
+        // Distance de securite
+        _securityTest(nearestEntity, light->getTransform()->getPosition());
+    }
+    else
+    {
+        _priority->setWeight(0.0);
+        _separation->setWeight(0.5);
+        _seek->setWeight(1.0);
+        _arrive->setWeight(0.0);
         
-        if (_currentTarget== (_track->getNbPoints() - 1  ))
-        {
-          _currentTarget=0;
+        //check if we are at the required point
+        Vector3D toTarget=_track->getPoint(_currentTarget)-
+        getTransform()->getPosition();
+        if (toTarget.getModule()<10.0)
+        { 
+            if (_currentTarget== (_track->getNbPoints() - 1  ))
+            {
+                _currentTarget=0;
+            }
+            else
+            {
+                _currentTarget++;
+            }
+            ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
         }
-        else
-	{
-	_currentTarget++;
-        }
-        ((SeekBehavior*)getBehavior(0))->setTarget(_track->getPoint(_currentTarget));
-      }
-          // Distance de securite
-      _securityTest(nearestEntity, _track->getPoint(_currentTarget));
+        
+        // Distance de securite
+        _securityTest(nearestEntity, _track->getPoint(_currentTarget));
     }
     
     SteeringEntity::update(dt);
