@@ -104,6 +104,11 @@ void CarEntity::_securityTest(SteeringEntity* nearestEntity)
 
             this->setVelocity(Vector3D(0.0, 0.0, 0.0));
          
+            Vector3D eTarget  = getCurrentTarget(); 
+            Vector3D ePTarget = getPreviousTarget();
+            Vector3D eForw    = eTarget-ePTarget;
+            eForw.normalize();
+            setForward( eForw );
         }
 
     }
@@ -128,9 +133,13 @@ void CarEntity::update(double dt)
     {
         // TrafficLight is On
         _arrive->setTarget(light->getTransform()->getPosition());
-        _arrive->setWeight(1.0);
+        
+        if( light_dist > 5.0 ) _arrive->setWeight(0.0);
+        else _arrive->setWeight(1.0);
+        
+        
         _seek->setWeight(0.0);
-        _separation->setWeight(4.0);
+        _separation->setWeight(0.0);
         
         // Distance de securite
         //_securityTest(nearestEntity);

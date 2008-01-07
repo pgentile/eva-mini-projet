@@ -53,7 +53,7 @@ Vector3D StayOnTrackBehavior::compute(SteeringEntity* se)
     
     Vector3D lwInter = leftWallStartPoint + leftWallVector * lwDist;
     Vector3D lwVectPen = nextPosition - lwInter;
-
+    
     widthVector.normalize();
     
     if( widthVector.produitScalaire( rwVectPen ) > 0 )
