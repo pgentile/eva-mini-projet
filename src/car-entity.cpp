@@ -14,8 +14,8 @@ CarEntity::CarEntity(SteeringSystem* system,
   _stayOnTrack = new StayOnTrackBehavior();
   addBehavior(_seek);
   addBehavior(_arrive);
-  addBehavior(_separation);
   addBehavior(_stayOnTrack);
+  addBehavior(_separation);
   addBehavior(_priority);
   _seek->setTarget(_track->getPoint(_currentTarget));
   _arrive->setWeight(0.0);
@@ -103,6 +103,9 @@ void CarEntity::_securityTest(SteeringEntity* nearestEntity, Vector3D target)
         if (toEntity.getModule() < 10.0) {
 
             this->setVelocity(Vector3D(0.0, 0.0, 0.0));
+	    _arrive->setWeight(0.0);
+	    _separation->setWeight(2.0);
+            //_seek->setWeight(0.0);
         }
 
 //      toEntity.normalize();
