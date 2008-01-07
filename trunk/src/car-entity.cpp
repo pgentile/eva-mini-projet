@@ -91,7 +91,7 @@ SteeringEntity* CarEntity::getNearestEntity(std::vector<SteeringEntity*> nearEnt
     return nearestEntity;
 }
 
-void CarEntity::_securityTest(SteeringEntity* nearestEntity, Vector3D target)
+void CarEntity::_securityTest(SteeringEntity* nearestEntity)
 {
     _securityOn = false;
     if (nearestEntity != (SteeringEntity*)0 ) {
@@ -99,21 +99,13 @@ void CarEntity::_securityTest(SteeringEntity* nearestEntity, Vector3D target)
         Vector3D nearestEntityPosition = nearestEntity->getTransform()->getPosition();
         Vector3D toEntity = nearestEntityPosition - position;
 
-// std::cerr << "dist detectee -> " << toEntity.getModule() << std::endl;
+        // std::cerr << "dist detectee -> " << toEntity.getModule() << std::endl;
         if (toEntity.getModule() < 10.0) {
 
             this->setVelocity(Vector3D(0.0, 0.0, 0.0));
-	    _arrive->setWeight(0.0);
-	    _separation->setWeight(2.0);
-            //_seek->setWeight(0.0);
+         
         }
 
-//      toEntity.normalize();
-//      _arrive->setTarget(position - toEntity);
-//      _arrive->setWeight(1.0);
-//      _seek->setWeight(0.0);
-//      _separation->setWeight(0.0);
-//      _securityOn = true;
     }
 }
 
@@ -138,9 +130,10 @@ void CarEntity::update(double dt)
         _arrive->setTarget(light->getTransform()->getPosition());
         _arrive->setWeight(1.0);
         _seek->setWeight(0.0);
-        _separation->setWeight(0.0);
+        _separation->setWeight(4.0);
+        
         // Distance de securite
-        _securityTest(nearestEntity, light->getTransform()->getPosition());
+        //_securityTest(nearestEntity);
     }
     else
     {
@@ -166,10 +159,11 @@ void CarEntity::update(double dt)
         }
         
         // Distance de securite
-        _securityTest(nearestEntity, _track->getPoint(_currentTarget));
+        //_securityTest(nearestEntity);
     }
     
     SteeringEntity::update(dt);
+    _securityTest(nearestEntity);
     
     if (_camera)
     {

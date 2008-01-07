@@ -14,7 +14,7 @@ Vector3D ArriveBehavior::compute(SteeringEntity* entity)
     Vector3D toTarget= _target - entity->getTransform()->getPosition();
     double dist = toTarget.getModule();
     
-    if (dist > 0.01)
+    if (dist > 1.0)
     {
         double speed = dist / _decelerationFactor;
         speed = MIN(speed,entity->getMaxVelocity());

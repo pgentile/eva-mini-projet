@@ -33,7 +33,7 @@ private:
   Camera* _camera;
   CarTrack* _track;
   
-  void _securityTest(SteeringEntity* nearestEntity, Vector3D target);
+  void _securityTest(SteeringEntity* nearestEntity);
   std::vector<SteeringEntity*> getNearEntities(double minDist,double maxDist, double minAngleDeg, double maxAngleDeg);
   std::vector<SteeringEntity*> getNearEntities(void);
   SteeringEntity* getNearestEntity(std::vector<SteeringEntity*> nearEntities);
