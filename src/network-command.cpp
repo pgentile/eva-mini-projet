@@ -23,9 +23,9 @@ bool NetworkCommand::parse(std::string input)
 		_time = strtod(parts[0].c_str(), NULL);
 	} else if (_name == "YOUR_ID_IS" || _name == "I_AM_ALIVE") {
 		_clientId = atoi(parts[0].c_str());
-	} else if (_name == "CONNECT_ME") {
-		// Do nothing...
-	} else if (_name == "ARE_YOU_ALIVE") {
+	} else if (_name == "ENTITY_ID_IS") {
+		_entityId = atoi(parts[0].c_str());
+	} else if (_name == "CONNECT_ME" || _name == "ARE_YOU_ALIVE" || _name == "GET_ENTITY_ID" || _name == "I_NEED_ALL_ENTITIES") {
 		// Do nothing...
 	} else if (_name == "ADD_ENTITY" || _name == "CORRECT") {
 		if (parts.size() >= 6) {
@@ -39,12 +39,7 @@ bool NetworkCommand::parse(std::string input)
 			return false;
 		}
 	} else if (_name == "REMOVE_ENTITY") {
-		if (parts.size() >= 2) {
-			_clientId = atoi(parts[0].c_str());
-			_entityId = atoi(parts[1].c_str());
-		} else {
-			return false;
-		}
+		_entityId = atoi(parts[0].c_str());
 	} else {
 		return false;
 	}
@@ -64,10 +59,23 @@ std::string NetworkCommand::toString(void)
 		buffer << " " << _position.getX() << "-" << _position.getY() << "-" << _position.getZ();
 		buffer << " " << _speed.getX() << "-" << _speed.getY() << "-" << _speed.getZ();
 		buffer << " " << _acceleration.getX() << "-" << _acceleration.getY() << "-" << _acceleration.getZ();
+	} else if (_name == "ENTITY_ID_IS") {
+		buffer << " " << _entityId;
 	} else if (_name == "REMOVE_ENTITY") {
 		buffer << " " << _clientId << " " << _entityId;
 	}
 	return buffer.str();
+}
+
+void NetworkCommand::display(void)
+{
+	std::cout << "Command: " << _name << std::endl;
+	std::cout << "\tTime: " << _time << std::endl;
+	std::cout << "\tEntity ID: " << _entityId << std::endl;
+	std::cout << "\tClient ID: " << _clientId << std::endl;
+	std::cout << "\tPosition: " << _position << std::endl;
+	std::cout << "\tSpeed: " << _speed << std::endl;
+	std::cout << "\tAcceleration: " << _acceleration << std::endl << std::endl;
 }
 
 Vector3D NetworkCommand::_parseVector(std::string s)

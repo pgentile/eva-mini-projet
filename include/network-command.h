@@ -18,6 +18,8 @@ public:
 	bool parse(std::string input);
 	
 	std::string toString(void);
+	
+	void display(void);
 
 	inline std::string getName(void) { return _name; }
 	inline void setName(std::string name) { _name = name; }
