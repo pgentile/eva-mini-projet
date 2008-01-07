@@ -11,7 +11,6 @@ public:
   virtual ~StayOnTrackBehavior();
 
   virtual Vector3D compute(SteeringEntity* entity);
-  
 protected:
 private:
 };
