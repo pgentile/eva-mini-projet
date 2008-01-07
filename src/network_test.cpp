@@ -87,7 +87,20 @@ void play(TCPTextClient& client, int clientId, double timeOffset)
 		if (client.isReady()) {
 			NetworkCommand cmd;
 			if (cmd.parse(client.receive())) {
-				cmd.display();
+				if (cmd.getName() == "I_NEED_ALL_ENTITIES") {
+					int i;
+					for (i = 0; i < 10; i++) {
+						NetworkCommand responseCmd("ADD_ENTITY");
+						responseCmd.setClientId(clientId);
+						responseCmd.setEntityId(0);
+						responseCmd.setTime(getCurrentTime() + timeOffset);
+						client.send(responseCmd.toString());
+					}
+				} else if (cmd.getName() == "ADD_ENTITY") {
+					std::cout << "Ajout d'une entite externe" << std::endl;
+				} else {
+					cmd.display();
+				}
 			} else {
 				std::cerr << "Invalid command" << std::endl;
 			}
@@ -109,10 +122,10 @@ void createClient(void)
 	std::cout << "Je suis branche sur le serveur" << std::endl;
 	std::cout << "\tMon ID : " << clientId << std::endl;
 	std::cout << "\tOffset temporel : " << timeOffset << std::endl;
-	getAllEntities(client);
-	std::cout << "Other entities added" << std::endl;
 	registerEntities(client, clientId, timeOffset);
 	std::cout << "My entities registred" << std::endl;
+	getAllEntities(client);
+	std::cout << "Other entities added" << std::endl;
 	play(client, clientId, timeOffset);
 }
 
