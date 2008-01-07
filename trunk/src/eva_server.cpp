@@ -3,6 +3,7 @@
 */
 #include <iostream>
 #include <sstream>
+#include <sys/time.h>
 #include "tcp-text-server.h"
 #include "network-command.h"
 
@@ -11,9 +12,10 @@ class EvaServer: public TCPTextServer
 
 public:
 	
-	EvaServer(unsigned short port = 22222, bool killOnLastExit = true, char endCharacter = '\n'):
-			TCPTextServer(port, killOnLastExit, endCharacter), _nextClientId(1)
+	EvaServer(unsigned short port = 22222, bool killOnLastExit = false, char endCharacter = '\n'):
+			TCPTextServer(port, killOnLastExit, endCharacter), _nextClientId(1), _nextEntityId(1), _startTime(0.0)
 	{
+		_startTime = _getCurrentTime();
 	}
 	
 	virtual ~EvaServer(void)
@@ -24,19 +26,10 @@ public:
 	{
 		NetworkCommand cmd;
 		if (cmd.parse(text)) {
-
-			// Display command
-			std::cout << "Received command: " << cmd.getName() << std::endl;
-			std::cout << "\tTime: " << cmd.getTime() << std::endl;
-			std::cout << "\tEntity ID: " << cmd.getEntityId() << std::endl;
-			std::cout << "\tClient ID: " << cmd.getClientId() << std::endl;
-			std::cout << "\tPosition: " << cmd.getPosition() << std::endl;
-			std::cout << "\tSpeed: " << cmd.getSpeed() << std::endl;
-			std::cout << "\tAcceleration: " << cmd.getAcceleration() << std::endl;
-			std::cout << std::endl;
+		
+			cmd.display();
 
 			std::string name = cmd.getName();
-			
 			NetworkCommand responseCmd;
 
 			// Connecter un client au serveur
@@ -46,16 +39,22 @@ public:
 				sock->send(responseCmd.toString());
 
 				responseCmd.setName("TIME_IS");
-				responseCmd.setTime(0.0);
+				responseCmd.setTime(_getCurrentTime() - _startTime);
 				sock->send(responseCmd.toString());
 			
-			// Envoyer la correction a tous les clients
-			} else if (name == "CORRECT") {
+			// Envoyer les informations sur les entites sur tous les serveurs
+			} else if (name == "CORRECT" || name == "ADD_ENTITY" || name == "REMOVE_ENTITY" || name == "I_NEED_ALL_ENTITIES") {
 				_sendToAll(cmd, sock);
+			
+			// Envoyer un ID pour une entite
+			} else if (name == "GET_ENTITY_ID") {
+				responseCmd.setName("ENTITY_ID_IS");
+				responseCmd.setEntityId(_nextEntityId++);
+				sock->send(responseCmd.toString());
 			}
 
 		} else {
-			std::cout << "Received data: " << text << ", but not recognized..." << std::endl;
+			std::cerr << "Received data: " << text << ", but not recognized..." << std::endl;
 		}
 		return true;
 	}
@@ -72,8 +71,21 @@ private:
 			sock->send(cmd.toString());
 		}
 	}
+	
+	double _getCurrentTime(void)
+	{
+		struct timeval t;
+		gettimeofday(&t, NULL);
+		double sec = (double) t.tv_sec;
+		double usec = (double) t.tv_usec * 0.000001;
+		return sec + usec;
+	}
 
 	int _nextClientId;
+	
+	int _nextEntityId;
+
+	double _startTime;
 
 };
 
