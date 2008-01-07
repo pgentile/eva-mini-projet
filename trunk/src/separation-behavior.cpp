@@ -38,5 +38,6 @@ Vector3D SeparationBehavior::compute(SteeringEntity* entity)
       toEntity.normalize();
       steeringForce=steeringForce+toEntity;
     }
+ 
   return steeringForce;
 }
