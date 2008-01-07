@@ -20,12 +20,12 @@
  * `I_NEED_ALL_ENTITIES` : un client demande aux autres clients de lui envoyer toutes les entités présentes.
  * `GET_ENTITY_ID` : demande d'un ID pour une entité
  * `ENTITY_ID_IS entity_id` : réponse du serveur qui transmet au client un ID pour une entité
- * `ADD_ENTITY entity_id time position speed acceleration` : ajout d'une entité par un client, transmise au serveur, puis aux autres clients
- * `REMOVE_ENTITY entity_id` : supression d'une entité, transmise au serveur, puis aux autres clients
+ * `ADD_ENTITY client_id entity_id time position speed acceleration` : ajout d'une entité par un client, transmise au serveur, puis aux autres clients
+ * `REMOVE_ENTITY client_id entity_id` : supression d'une entité, transmise au serveur, puis aux autres clients
 
 == Correction de trajectoire ==
 
- * `CORRECT entity_id time position speed acceleration` : correction de la trajectoire d'un client
+ * `CORRECT client_id entity_id time position speed acceleration` : correction de la trajectoire d'un client
 
 == Formats de données ==
 
