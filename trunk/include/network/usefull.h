@@ -2,6 +2,7 @@
 #define USEFULL_H
 
 #include <vector>
+#include <string>
 
 //usefull macros
 #ifndef MAX
