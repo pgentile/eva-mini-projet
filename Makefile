@@ -14,13 +14,15 @@ steering-entity.cpp steering-system.cpp \
 steering-behavior.cpp stay-on-track-behavior.cpp flee-behavior.cpp separation-behavior.cpp arrive-behavior.cpp seek-behavior.cpp wander-behavior.cpp \
 vector-3d.cpp shape-part.cpp road-block.cpp \
 transform.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
-baseshapes.cpp camera.cpp entity.cpp wall.cpp priority-behavior.cpp
+baseshapes.cpp camera.cpp entity.cpp wall.cpp priority-behavior.cpp \
+network-command.cpp
 EVA_CLIENT_OBJS=$(EVA_CLIENT_SOURCES:.cpp=.o)
 EVA_CLIENT_LIBS=-lm -L/usr/X11R6/lib -lglut -lGL -lGLU -lX11 -lXi -lXmu \
 	$(LIBNETWORK_LIBS)
 
 #EVA_server files
-EVA_SERVER_SOURCES=eva_server.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp
+EVA_SERVER_SOURCES=eva_server.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
+network-command.cpp vector-3d.cpp
 EVA_SERVER_OBJS=$(EVA_SERVER_SOURCES:.cpp=.o)
 EVA_SERVER_LIBS=$(LIBNETWORK_LIBS)
 
@@ -34,7 +36,8 @@ GL_TEST_LIBS=-lm -L/usr/X11R6/lib -lglut -lGL -lGLU -lX11 -lXi -lXmu \
 	$(LIBNETWORK_LIBS)
 
 #network_test files
-NETWORK_TEST_SOURCES=network_test.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp vector-3d.cpp
+NETWORK_TEST_SOURCES=network_test.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp vector-3d.cpp \
+network-command.cpp
 NETWORK_TEST_OBJS=$(NETWORK_TEST_SOURCES:.cpp=.o)
 NETWORK_TEST_LIBS=$(LIBNETWORK_LIBS)
 
@@ -56,7 +59,7 @@ network_test: $(NETWORK_TEST_OBJS)
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	-rm $(EVA_CLIENT_OBJS) \
+	rm -rf $(EVA_CLIENT_OBJS) \
 	$(EVA_SERVER_OBJS) \
 	$(GL_TEST_OBJS) \
 	$(NETWORK_TEST_OBJS) \
