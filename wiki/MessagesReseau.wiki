@@ -17,7 +17,7 @@
 
 == Gestion des entités ==
 
- * `ASK_ENTITY_ID` : demande d'un ID pour une entité
+ * `GET_ENTITY_ID` : demande d'un ID pour une entité
  * `ENTITY_ID_IS entity_id` : réponse du serveur qui transmet au client un ID pour une entité
  * `ADD_ENTITY entity_id time position speed acceleration` : ajout d'une entité par un client, transmise au serveur, puis aux autres clients
  * `REMOVE_ENTITY entity_id` : supression d'une entité, transmise au serveur, puis aux autres clients
