@@ -114,6 +114,16 @@ public:
   {
       _currentTarget=pos;
   }
+  
+  inline Vector3D getAcceleration()
+  {
+      return _acceleration;
+  }
+  
+  inline void setAcceleration(Vector3D acceleration)
+  {
+      _acceleration = acceleration;
+  }
 
 protected:
   void initShape();
@@ -126,6 +136,7 @@ private:
   double _maxAcceleration;
   double _mass;
   Vector3D _velocity;
+  Vector3D _acceleration;
   std::vector<SteeringBehavior*> _behaviors;
 };
 

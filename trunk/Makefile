@@ -15,7 +15,7 @@ steering-behavior.cpp stay-on-track-behavior.cpp flee-behavior.cpp separation-be
 vector-3d.cpp shape-part.cpp road-block.cpp \
 transform.cpp tcp-text-server.cpp tcp-text-client.cpp tcp-text-socket.cpp \
 baseshapes.cpp camera.cpp entity.cpp wall.cpp priority-behavior.cpp \
-network-command.cpp
+network-command.cpp virtual-car-entity.cpp
 EVA_CLIENT_OBJS=$(EVA_CLIENT_SOURCES:.cpp=.o)
 EVA_CLIENT_LIBS=-lm -L/usr/X11R6/lib -lglut -lGL -lGLU -lX11 -lXi -lXmu \
 	$(LIBNETWORK_LIBS)
