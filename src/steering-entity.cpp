@@ -19,19 +19,18 @@ SteeringEntity::~SteeringEntity()
 
 void SteeringEntity::update(double dt)
 {
-    Vector3D acceleration;
     Vector3D oldVelocity=_velocity;
     
     for (unsigned int i=0;i<_behaviors.size();i++)
     {
-        acceleration=acceleration+
+        _acceleration=_acceleration+
         _behaviors[i]->getWeight()*
         _behaviors[i]->compute(this);
     }
     
-    acceleration=acceleration/_mass;
-    acceleration.truncate(_maxAcceleration);
-    _velocity=_velocity+acceleration*dt;
+    _acceleration=_acceleration/_mass;
+    _acceleration.truncate(_maxAcceleration);
+    _velocity=_velocity+_acceleration*dt;
     _velocity.truncate(_maxVelocity);
     
     //update position & orientation

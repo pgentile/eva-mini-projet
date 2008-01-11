@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/time.h>
 #include <sstream>
+#include <vector>
 #include <stdlib.h>
 #include "tcp-text-server.h"
 #include "vector-3d.h"
@@ -21,6 +22,7 @@
 #include "car-track.h"
 #include "car-entity.h"
 #include "wall.h"
+#include "virtual-car-entity.h"
 
 Camera* camera;
 unsigned int current_camera = 0;
@@ -28,7 +30,7 @@ Light global;
 bool zoom = false, rotate = false, state = false;
 int OldY, OldX;
 double pitch = 0, yaw = 0;
-double dt = .1;
+double dt = 1.0;
 
 //The global Scene
 Scene scene;
@@ -40,6 +42,9 @@ TrafficLight* trafficLight = NULL;
 TCPTextClient client;
 int clientId;
 double timeOffset;
+double lastCorrection = 0;
+
+std::vector<SteeringEntity*> cars;
 
 
 double getCurrentTime(void)
@@ -51,7 +56,7 @@ double getCurrentTime(void)
 	return sec + usec;
 }
 
-void initConnection(TCPTextClient& client, int& clientId, double& timeOffset)
+void initConnection()
 {
 	client.send("CONNECT_ME");
 	bool hasClientId = false, hasTimeOffset = false;
@@ -76,23 +81,41 @@ void initConnection(TCPTextClient& client, int& clientId, double& timeOffset)
 	}
 }
 
-void getAllEntities(TCPTextClient& client)
+void createOrUpdateEntity(std::vector<SteeringEntity*>& entities, int netId, Vector3D position, Vector3D speed, Vector3D acceleration)
 {
-	client.send("I_NEED_ALL_ENTITIES");
+    for (std::vector<SteeringEntity*>::iterator i = entities.begin(); i != entities.end(); i++) {
+        if ((*i)->getNetId() == netId) {
+            (*i)->getTransform()->setPosition(position);
+            (*i)->setVelocity(speed);
+            (*i)->setAcceleration(acceleration);
+            return;
+        }
+    }
+    SteeringEntity* entity = new VirtualCarEntity(&steeringSystem);
+    entity->getTransform()->setPosition(position);
+    entity->setVelocity(speed);
+    entity->setAcceleration(acceleration);
+    scene.addEntity(entity);
+    entities.push_back(entity);
+}
+
+void registerExternalEntities(std::vector<SteeringEntity*>& entities)
+{
+   	client.send("I_NEED_ALL_ENTITIES");
 	double startTime = getCurrentTime();
 	double currentTime = startTime;
 	while (currentTime - startTime < 3.0) {
 		if (client.isReady()) {
 			NetworkCommand cmd;
 			if (cmd.parse(client.receive()) && cmd.getName() == "ADD_ENTITY") {
-				std::cout << "Entite ajoutee" << std::endl;
+				createOrUpdateEntity(entities, cmd.getEntityId(), cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
 			}
 		}
 		currentTime = getCurrentTime();
 	}
 }
 
-void registerEntity(TCPTextClient& client, int clientId, double timeOffset, SteeringEntity& entity)
+void registerEntity(std::vector<SteeringEntity*>& entities, SteeringEntity& entity)
 {
 	client.send("GET_ENTITY_ID");
 	bool idRecieved = false;
@@ -101,6 +124,7 @@ void registerEntity(TCPTextClient& client, int clientId, double timeOffset, Stee
 			NetworkCommand cmd;
 			if (cmd.parse(client.receive()) && cmd.getName() == "ENTITY_ID_IS") {
 				entity.setNetId(cmd.getEntityId());
+                                entities.push_back(&entity);
 
 				NetworkCommand responseCmd("ADD_ENTITY");
 				responseCmd.setClientId(clientId);
@@ -108,6 +132,7 @@ void registerEntity(TCPTextClient& client, int clientId, double timeOffset, Stee
 				responseCmd.setTime(getCurrentTime() + timeOffset);
 				responseCmd.setPosition(entity.getTransform()->getPosition());
 				responseCmd.setSpeed(entity.getVelocity());
+                                responseCmd.setAcceleration(entity.getAcceleration());
 				client.send(responseCmd.toString());
 
 				idRecieved = true;
@@ -116,34 +141,60 @@ void registerEntity(TCPTextClient& client, int clientId, double timeOffset, Stee
 	}
 }
 
-void play(TCPTextClient& client, int clientId, double timeOffset)
+void handlePlayingMessages()
 {
-	while (true) {
-		if (client.isReady()) {
-			NetworkCommand cmd;
-			if (cmd.parse(client.receive())) {
-				if (cmd.getName() == "I_NEED_ALL_ENTITIES") {
-					int i;
-					for (i = 0; i < 10; i++) {
-						NetworkCommand responseCmd("ADD_ENTITY");
-						responseCmd.setClientId(clientId);
-						responseCmd.setEntityId(0);
-						responseCmd.setTime(getCurrentTime() + timeOffset);
-						client.send(responseCmd.toString());
-					}
-				} else if (cmd.getName() == "ADD_ENTITY") {
-					std::cout << "Ajout d'une entite externe" << std::endl;
-				} else {
-					cmd.display();
-				}
-			} else {
-				std::cerr << "Invalid command" << std::endl;
-			}
-		}
-	}
+    if (client.isReady()) {
+        NetworkCommand cmd;
+        if (cmd.parse(client.receive())) {
+            if (cmd.getName() == "I_NEED_ALL_ENTITIES") {
+                for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
+                    SteeringEntity* car = *i;
+                    if (typeid(*car) == typeid(CarEntity)) {
+                        NetworkCommand responseCmd("ADD_ENTITY");
+                        responseCmd.setClientId(clientId);
+                        responseCmd.setEntityId(car->getNetId());
+                        responseCmd.setPosition(car->getTransform()->getPosition());
+                        responseCmd.setSpeed(car->getVelocity());
+                        responseCmd.setAcceleration(car->getAcceleration());
+                        responseCmd.setTime(getCurrentTime() + timeOffset);
+                        client.send(responseCmd.toString());
+                    }
+                }
+                
+            } else if (cmd.getName() == "ADD_ENTITY") {
+                createOrUpdateEntity(cars, cmd.getEntityId(), cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
+            } else if (cmd.getName() == "CORRECT") {
+                for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
+                    SteeringEntity* car = *i;
+                    if (car->getNetId() == cmd.getEntityId()) {
+                        car->getTransform()->setPosition(cmd.getPosition());
+                        car->setVelocity(cmd.getSpeed());
+                        car->setAcceleration(cmd.getAcceleration());
+                    }
+                }
+            } else {
+                std::cerr << "Untreatable command" << std::endl;
+            }
+        } else {
+            std::cerr << "Invalid command" << std::endl;
+        }
+    }
 }
 
-
+void correctPositions()
+{
+    for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
+        SteeringEntity* car = *i;
+        NetworkCommand cmd("CORRECT");
+        cmd.setTime(getCurrentTime() + timeOffset);
+        cmd.setClientId(clientId);
+        cmd.setEntityId(car->getNetId());
+        cmd.setPosition(car->getTransform()->getPosition());
+        cmd.setSpeed(car->getVelocity());
+        cmd.setAcceleration(car->getAcceleration());
+        client.send(cmd.toString());
+    }
+}
 
 void renderBitmapString(float x, float y, void* font, char* string)
 {
@@ -328,11 +379,17 @@ void Draw(void)
 
 void Idle(void)
 {
-	// On fait vivre les entités
-	scene.update(dt);
-
-	// On demande le rafraichissement de l'affichage
-	glutPostRedisplay();
+    handlePlayingMessages();
+    
+    if (getCurrentTime() - lastCorrection > 1.0) {
+        correctPositions();
+    }
+    
+    // On fait vivre les entités
+    scene.update(dt);
+    
+    // On demande le rafraichissement de l'affichage
+    glutPostRedisplay();
 }
 
 
@@ -345,7 +402,7 @@ void init()
 		std::cerr << "Error during client connection..." << std::endl;
 		return;
 	}
-	initConnection(client, clientId, timeOffset);
+	initConnection();
 
 	// Initialisation d'OpenGL
 
@@ -400,33 +457,25 @@ void init()
 	CarTrack* track = new CarTrack(trafficLight);
 	scene.addEntity(track);
 
-	// Ajout d'une voiture
-
-	CarEntity* ent = new CarEntity(&steeringSystem,track, 0);
-	scene.addEntity(ent);
-	ent->setTarget(0); // On place la voiture sur le premier point du circuit
-	Vector3D pos = ent->getTrack()->getPoint(0);
-	ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);
-	registerEntity(client, clientId, timeOffset, *ent);
-
-	Camera* cam = new Camera();
-	scene.addCamera(cam);
-	ent->setCamera(cam);
 	// Ajout du mur
-													 
+
 	Wall* wall = new Wall(Vector3D(0.0, 0.0, 0.0), Vector3D(5.0, 7.0, 0.0));
 	scene.addEntity(wall);
 
 	// Ajout d'autres voitures
 
 	for (unsigned int i = 0; i < 10; i++) {
-		CarEntity* ent = new CarEntity(&steeringSystem, track, i + 1);
+		CarEntity* ent = new CarEntity(&steeringSystem, track, i);
 		scene.addEntity(ent);
 		ent->setTarget(i + 1);
-		Vector3D pos = ent->getTrack()->getPoint(i + 1);
+		Vector3D pos = ent->getTrack()->getPoint(i);
 		ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);
-		registerEntity(client, clientId, timeOffset, *ent);
+		registerEntity(cars, *ent);
 	}
+
+        // Enregistrement des entités externes
+
+        registerExternalEntities(cars);
 
 }
 
@@ -441,7 +490,7 @@ int main( int argc,char** argv )
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("Ants");
-	
+
 	init();
 
 	// Definitions des callbacks
