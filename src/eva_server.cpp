@@ -26,7 +26,8 @@ public:
 	{
 		NetworkCommand cmd;
 		if (cmd.parse(text)) {
-		
+
+			std::cout << "Commande recue :" << std::endl;
 			cmd.display();
 
 			std::string name = cmd.getName();
@@ -38,9 +39,15 @@ public:
 				responseCmd.setClientId(_nextClientId++);
 				sock->send(responseCmd.toString());
 
+				std::cout << "Commande envoyee :" << std::endl;
+				responseCmd.display();
+
 				responseCmd.setName("TIME_IS");
 				responseCmd.setTime(_getCurrentTime() - _startTime);
 				sock->send(responseCmd.toString());
+
+				std::cout << "Commande envoyee :" << std::endl;
+				responseCmd.display();
 			
 			// Envoyer les informations sur les entites sur tous les serveurs
 			} else if (name == "CORRECT" || name == "ADD_ENTITY" || name == "REMOVE_ENTITY" || name == "I_NEED_ALL_ENTITIES") {
@@ -51,6 +58,9 @@ public:
 				responseCmd.setName("ENTITY_ID_IS");
 				responseCmd.setEntityId(_nextEntityId++);
 				sock->send(responseCmd.toString());
+
+				std::cout << "Commande envoyee :" << std::endl;
+				responseCmd.display();
 			}
 
 		} else {
@@ -69,6 +79,9 @@ private:
 				continue;
 			}
 			sock->send(cmd.toString());
+
+			std::cout << "Commande envoyee :" << std::endl;
+			cmd.display();
 		}
 	}
 	

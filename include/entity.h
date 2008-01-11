@@ -20,9 +20,13 @@ public:
 
   inline Transform* getTransform() {return &_transform;}
 
+  inline int getNetId() { return _netId; }
+  inline void setNetId(int netId) { _netId = netId; }
+
 protected:
   Shape* _shape;
   Transform _transform;
+  int _netId;
   
 private:
 
