@@ -39,10 +39,12 @@ SteeringSystem steeringSystem;
 TrafficLight* trafficLight = NULL;
 
 
+std::string server;
 TCPTextClient client;
 int clientId;
 double timeOffset;
-double lastCorrection = 0;
+double lastCorrection = 0.0;
+double lastUpdate = 0.0;
 
 std::vector<SteeringEntity*> cars;
 
@@ -379,14 +381,24 @@ void Draw(void)
 
 void Idle(void)
 {
+    double currentTime = getCurrentTime();
+    if (lastUpdate == 0.0) {
+        lastUpdate = currentTime;
+    }
+    
     handlePlayingMessages();
     
-    if (getCurrentTime() - lastCorrection > 1.0) {
+    if (currentTime - lastCorrection > 1.0) {
         correctPositions();
+        lastCorrection = currentTime;
     }
     
     // On fait vivre les entités
-    scene.update(dt);
+    if (currentTime > lastUpdate) {
+        scene.update(currentTime - lastUpdate);
+    }
+    
+    lastUpdate = currentTime;
     
     // On demande le rafraichissement de l'affichage
     glutPostRedisplay();
@@ -398,7 +410,7 @@ void init()
 
 	// Initialisation du client réseau
 
-	if (!client.connect("localhost", 22222)) {
+	if (!client.connect(server, 22222)) {
 		std::cerr << "Error during client connection..." << std::endl;
 		return;
 	}
@@ -482,29 +494,35 @@ void init()
 /*
 	Fonction principale.
 */
-int main( int argc,char** argv )
+int main(int argc, char** argv )
 {
-	// Initialisation de l'application avec Glut
-
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(600, 600);
-	glutCreateWindow("Ants");
-
-	init();
-
-	// Definitions des callbacks
-	glutReshapeFunc(Reshape);
-	glutDisplayFunc(Draw);
-	glutIdleFunc(Idle);
-	glutKeyboardFunc(Key);
-	glutSpecialFunc(SpecialKey);
-	glutMouseFunc(MouseClick);
-	glutMotionFunc(MouseMove);
-	glutPassiveMotionFunc(MousePassiveMove);
-
-	glutMainLoop();
-
-	return 0;
+    if (argc < 2) {
+        std::cerr << "Usage : eva_client <server>" << std::endl;
+        return 1;
+    }
+    server = argv[1];
+    
+    // Initialisation de l'application avec Glut
+    
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize(600, 600);
+    glutCreateWindow("Ants");
+    
+    init();
+    
+    // Definitions des callbacks
+    glutReshapeFunc(Reshape);
+    glutDisplayFunc(Draw);
+    glutIdleFunc(Idle);
+    glutKeyboardFunc(Key);
+    glutSpecialFunc(SpecialKey);
+    glutMouseFunc(MouseClick);
+    glutMotionFunc(MouseMove);
+    glutPassiveMotionFunc(MousePassiveMove);
+    
+    glutMainLoop();
+    
+    return 0;
 }
 
