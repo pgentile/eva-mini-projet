@@ -21,7 +21,7 @@ bool NetworkCommand::parse(std::string input)
 	}
 	if (_name == "TIME_IS") {
 		_time = strtod(parts[0].c_str(), NULL);
-	} else if (_name == "YOUR_ID_IS" || _name == "I_AM_ALIVE") {
+	} else if (_name == "YOUR_ID_IS" || _name == "I_AM_ALIVE" || _name == "TAKE_FIRE" || _name == "RELEASE_FIRE") {
 		_clientId = atoi(parts[0].c_str());
 	} else if (_name == "ENTITY_ID_IS") {
 		_entityId = atoi(parts[0].c_str());
@@ -52,7 +52,7 @@ std::string NetworkCommand::toString(void)
 	buffer << _name;
 	if (_name == "TIME_IS") {
 		buffer << " " << _time;
-	} else if (_name == "YOUR_ID_IS" || _name == "I_AM_ALIVE") {
+	} else if (_name == "YOUR_ID_IS" || _name == "I_AM_ALIVE" || _name == "TAKE_FIRE" || _name == "RELEASE_FIRE") {
 		buffer << " " << _clientId;
 	} else if (_name == "ADD_ENTITY" || _name == "CORRECT") {
 		buffer << " " << _clientId << " " << _entityId << " " << _time;
