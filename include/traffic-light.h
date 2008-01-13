@@ -20,6 +20,17 @@ public:
   {
     _stop=!_stop;
   }
+  
+  inline void enable()
+  {
+      _stop = true;
+  }
+  
+  inline void disable()
+  {
+      _stop = false;
+  }
+  
   inline double getDistance() const
   {
     return _distance;
