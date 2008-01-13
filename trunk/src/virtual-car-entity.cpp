@@ -1,5 +1,6 @@
 #include "virtual-car-entity.h"
 #include "steering-behavior.h"
+#include <sys/time.h>
 
 VirtualCarEntity::VirtualCarEntity(SteeringSystem* system): SteeringEntity(system), _delay(0.0) {
 }

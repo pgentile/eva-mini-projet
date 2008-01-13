@@ -162,11 +162,8 @@ void handlePlayingMessages() {
             } else if (cmd.getName() == "CORRECT") {
                 for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
                     VirtualCarEntity* car = (VirtualCarEntity*) *i;
-                    if (car->getNetId() == cmd.getEntityId()) {
-                        car->getTransform()->setPosition(cmd.getPosition());
-                        car->setVelocity(cmd.getSpeed());
-                        car->setAcceleration(cmd.getAcceleration());
-                    }
+                    double delay = getCurrentTime() + timeOffset - cmd.getTime();
+                    car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
                 }
             } else if (cmd.getName() == "TAKE_FIRE") {
                 trafficLight->enable();
