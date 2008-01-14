@@ -74,7 +74,7 @@ public:
             } else if (name == "TAKE_FIRE") {
                 if (!_fireEnabled) {
                     _fireEnabled = true;
-                    _fireExpiration = currentTime + 10;
+                    _fireExpiration = currentTime + 30;
                     _controllingFireClientId = cmd.getClientId();
                     
                     responseCmd.setName("TAKE_FIRE");

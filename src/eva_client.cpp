@@ -91,6 +91,7 @@ void createOrUpdateEntity(std::vector<SteeringEntity*>& entities, int netId, Vec
         }
     }
     SteeringEntity* entity = new VirtualCarEntity(&steeringSystem);
+	entity->setNetId(netId);
     entity->getTransform()->setPosition(position);
     entity->setVelocity(Vector3D());
     entity->setAcceleration(Vector3D());
@@ -102,7 +103,7 @@ void registerExternalEntities(std::vector<SteeringEntity*>& entities) {
     client.send("I_NEED_ALL_ENTITIES");
     double startTime = getCurrentTime();
     double currentTime = startTime;
-    while (currentTime - startTime < 3.0) {
+    while (currentTime - startTime < 1.0) {
         if (client.isReady()) {
             NetworkCommand cmd;
             if (cmd.parse(client.receive()) && cmd.getName() == "ADD_ENTITY") {
@@ -161,8 +162,8 @@ void handlePlayingMessages() {
                 createOrUpdateEntity(cars, cmd.getEntityId(), cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
             } else if (cmd.getName() == "CORRECT") {
                 for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
-                    VirtualCarEntity* car = (VirtualCarEntity*) *i;
-					if (car->getNetId() == cmd.getEntityId()) {
+                    VirtualCarEntity* car = dynamic_cast<VirtualCarEntity*>(*i);
+					if (car != NULL && car->getNetId() == cmd.getEntityId()) {
                     	double delay = getCurrentTime() + timeOffset - cmd.getTime();
                     	car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
 						break;
@@ -197,14 +198,16 @@ void releaseFire() {
 void correctPositions() {
     for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
         SteeringEntity* car = *i;
-        NetworkCommand cmd("CORRECT");
-        cmd.setTime(getCurrentTime() + timeOffset);
-        cmd.setClientId(clientId);
-        cmd.setEntityId(car->getNetId());
-        cmd.setPosition(car->getTransform()->getPosition());
-        cmd.setSpeed(car->getVelocity());
-        cmd.setAcceleration(car->getAcceleration());
-        client.send(cmd.toString());
+		if (dynamic_cast<CarEntity*>(car)) {
+			NetworkCommand cmd("CORRECT");
+			cmd.setTime(getCurrentTime() + timeOffset);
+			cmd.setClientId(clientId);
+			cmd.setEntityId(car->getNetId());
+			cmd.setPosition(car->getTransform()->getPosition());
+			cmd.setSpeed(car->getVelocity());
+			cmd.setAcceleration(car->getAcceleration());
+			client.send(cmd.toString());
+		}
     }
 }
 
@@ -385,7 +388,7 @@ void Idle(void) {
     
     handlePlayingMessages();
     
-    if (currentTime - lastCorrection > 0.1) {
+    if (currentTime - lastCorrection > 0.05) {
         correctPositions();
         lastCorrection = currentTime;
     }
