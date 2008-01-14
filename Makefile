@@ -7,7 +7,7 @@ CFLAGS= -g -I $(INCDIR) -Wall -ansi -pedantic
 
 #EVA_client files
 EVA_CLIENT_SOURCES= \
-light.cpp indycar2.cpp load_texture.cpp eva_client.cpp material.cpp \
+light.cpp load_texture.cpp eva_client.cpp material.cpp \
 scene.cpp shape.cpp  texture.cpp \
 traffic-light.cpp car-entity.cpp car-track.cpp \
 steering-entity.cpp steering-system.cpp \
@@ -28,7 +28,7 @@ EVA_SERVER_LIBS=$(LIBNETWORK_LIBS)
 
 #gl_test files
 GL_TEST_SOURCES=baseshapes.cpp camera.cpp entity.cpp \
-light.cpp load_texture.cpp indycar2.cpp vector-3d.cpp gl_test.cpp material.cpp \
+light.cpp load_texture.cpp vector-3d.cpp gl_test.cpp material.cpp \
 scene.cpp shape.cpp shape-part.cpp texture.cpp \
 transform.cpp
 GL_TEST_OBJS=$(GL_TEST_SOURCES:.cpp=.o)
