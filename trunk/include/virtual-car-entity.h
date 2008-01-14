@@ -2,7 +2,7 @@
 #define	VIRTUAL_CAR_ENTITY_H
 
 #include "steering-entity.h"
-#include "flee-behavior.h"
+#include "seek-behavior.h"
 
 class VirtualCarEntity: public SteeringEntity
 {
@@ -19,7 +19,7 @@ private:
     
     double _getCurrentTime(void);
     
-    FleeBehavior _fleeBehavior;
+    SeekBehavior _seekBehavior;
     
     double _delay;
     
