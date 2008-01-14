@@ -369,8 +369,8 @@ void Draw(void) {
     // to the upper left corner
     glTranslatef(0, -480, 0);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    renderHelp();
+    glLoadIdentity();    
+    renderHelp();    
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -475,12 +475,13 @@ void init() {
     
     // Ajout d'autres voitures
     
+
     for (unsigned int i = 0; i < 2; i++) {
         CarEntity* ent = new CarEntity(&steeringSystem, track, i);
         scene.addEntity(ent);
         ent->setTarget(i + 1);
         Vector3D pos = ent->getTrack()->getPoint(i);
-        ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);
+        ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);        
         registerEntity(cars, *ent);
     }
     

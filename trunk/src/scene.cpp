@@ -22,7 +22,7 @@ Scene::~Scene()
 }
 
 void Scene::render()
-{
+{  
   for (unsigned int i=0;i<_entities.size();i++)
   {
      _entities[i]->render();
