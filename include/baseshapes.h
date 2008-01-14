@@ -19,6 +19,30 @@ protected:
 private:
 };
 
+class Avion:public ShapePart
+{
+  public:
+    Avion();
+    virtual ~Avion();
+
+    virtual void render();
+
+  protected:
+  private:
+};
+
+class Car:public ShapePart
+{
+  public:
+    Car();
+    virtual ~Car();
+
+    virtual void render();
+
+  protected:
+  private:
+};
+
 class Sphere:public ShapePart
 {
 public:

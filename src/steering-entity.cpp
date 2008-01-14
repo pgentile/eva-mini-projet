@@ -41,7 +41,7 @@ void SteeringEntity::update(double dt)
 
 void SteeringEntity::initShape()
 {
-    _steeringShape=new AntShape();
+    //_steeringShape=new AntShape();
     
     /*
     _steeringShape = new Shape();
@@ -51,6 +51,17 @@ void SteeringEntity::initShape()
     part=new Sphere();
     _steeringShape->addPart(part);
     */
+    
+    
+    _steeringShape = new Shape();
+    ShapePart* part=new Car();
+    part->getTransform()->setScale(0.6,0.6,0.6);
+    part->getMaterial()->setAmbient(1.0,0.0,0.0);
+    part->getMaterial()->setDiffuse(1.0,0.0,0.0);
+
+    _steeringShape->addPart(part);
+    
+
     setShape(_steeringShape);
 	
 }
