@@ -146,10 +146,18 @@ void CarEntity::update(double dt)
     }
     else
     {
-        _priority->setWeight(0.0);
-        _separation->setWeight(0.5);
-        _seek->setWeight(1.0);
-        _arrive->setWeight(0.0);
+		if(_priority) {
+        	_priority->setWeight(0.0);
+		}
+		if(_separation) {
+        	_separation->setWeight(0.5);
+		}
+		if(_seek) {
+        	_seek->setWeight(1.0);
+		}
+		if(_arrive) {
+        	_arrive->setWeight(0.0);
+		}
         
         //check if we are at the required point
         Vector3D toTarget=_track->getPoint(_currentTarget)-
