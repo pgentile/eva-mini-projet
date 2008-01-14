@@ -92,8 +92,8 @@ void createOrUpdateEntity(std::vector<SteeringEntity*>& entities, int netId, Vec
     }
     SteeringEntity* entity = new VirtualCarEntity(&steeringSystem);
     entity->getTransform()->setPosition(position);
-    entity->setVelocity(speed);
-    entity->setAcceleration(acceleration);
+    entity->setVelocity(Vector3D());
+    entity->setAcceleration(Vector3D());
     scene.addEntity(entity);
     entities.push_back(entity);
 }
@@ -162,8 +162,11 @@ void handlePlayingMessages() {
             } else if (cmd.getName() == "CORRECT") {
                 for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
                     VirtualCarEntity* car = (VirtualCarEntity*) *i;
-                    double delay = getCurrentTime() + timeOffset - cmd.getTime();
-                    car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
+					if (car->getNetId() == cmd.getEntityId()) {
+                    	double delay = getCurrentTime() + timeOffset - cmd.getTime();
+                    	car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
+						break;
+					}
                 }
             } else if (cmd.getName() == "TAKE_FIRE") {
                 trafficLight->enable();
@@ -469,7 +472,7 @@ void init() {
     
     // Ajout d'autres voitures
     
-    for (unsigned int i = 0; i < 10; i++) {
+    for (unsigned int i = 0; i < 2; i++) {
         CarEntity* ent = new CarEntity(&steeringSystem, track, i);
         scene.addEntity(ent);
         ent->setTarget(i + 1);
