@@ -3,6 +3,7 @@
 
 #include "steering-entity.h"
 #include "seek-behavior.h"
+#include "arrive-behavior.h"
 
 class VirtualCarEntity: public SteeringEntity
 {
@@ -20,6 +21,8 @@ private:
     double _getCurrentTime(void);
     
     SeekBehavior _seekBehavior;
+    
+    ArriveBehavior _arriveBehavior;
     
     double _delay;
     
