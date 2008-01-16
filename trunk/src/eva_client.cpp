@@ -91,7 +91,7 @@ void createOrUpdateEntity(std::vector<SteeringEntity*>& entities, int netId, Vec
         }
     }
     SteeringEntity* entity = new VirtualCarEntity(&steeringSystem);
-	entity->setNetId(netId);
+    entity->setNetId(netId);
     entity->getTransform()->setPosition(position);
     entity->setVelocity(Vector3D());
     entity->setAcceleration(Vector3D());
@@ -163,11 +163,11 @@ void handlePlayingMessages() {
             } else if (cmd.getName() == "CORRECT") {
                 for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
                     VirtualCarEntity* car = dynamic_cast<VirtualCarEntity*>(*i);
-					if (car != NULL && car->getNetId() == cmd.getEntityId()) {
-                    	double delay = getCurrentTime() + timeOffset - cmd.getTime();
-                    	car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
-						break;
-					}
+                    if (car != NULL && car->getNetId() == cmd.getEntityId()) {
+                        double delay = getCurrentTime() + timeOffset - cmd.getTime();
+                        car->correct(delay, cmd.getPosition(), cmd.getSpeed(), cmd.getAcceleration());
+                        break;
+                    }
                 }
             } else if (cmd.getName() == "TAKE_FIRE") {
                 trafficLight->enable();
@@ -198,16 +198,16 @@ void releaseFire() {
 void correctPositions() {
     for (std::vector<SteeringEntity*>::iterator i = cars.begin(); i != cars.end(); i++) {
         SteeringEntity* car = *i;
-		if (dynamic_cast<CarEntity*>(car)) {
-			NetworkCommand cmd("CORRECT");
-			cmd.setTime(getCurrentTime() + timeOffset);
-			cmd.setClientId(clientId);
-			cmd.setEntityId(car->getNetId());
-			cmd.setPosition(car->getTransform()->getPosition());
-			cmd.setSpeed(car->getVelocity());
-			cmd.setAcceleration(car->getAcceleration());
-			client.send(cmd.toString());
-		}
+        if (dynamic_cast<CarEntity*>(car)) {
+            NetworkCommand cmd("CORRECT");
+            cmd.setTime(getCurrentTime() + timeOffset);
+            cmd.setClientId(clientId);
+            cmd.setEntityId(car->getNetId());
+            cmd.setPosition(car->getTransform()->getPosition());
+            cmd.setSpeed(car->getVelocity());
+            cmd.setAcceleration(car->getAcceleration());
+            client.send(cmd.toString());
+        }
     }
 }
 
@@ -369,8 +369,8 @@ void Draw(void) {
     // to the upper left corner
     glTranslatef(0, -480, 0);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();    
-    renderHelp();    
+    glLoadIdentity();
+    renderHelp();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -388,7 +388,7 @@ void Idle(void) {
     
     handlePlayingMessages();
     
-    if (currentTime - lastCorrection > 0.05) {
+    if (currentTime - lastCorrection > 0.2) {
         correctPositions();
         lastCorrection = currentTime;
     }
@@ -475,13 +475,12 @@ void init() {
     
     // Ajout d'autres voitures
     
-
-    for (unsigned int i = 0; i < 2; i++) {
+    for (unsigned int i = 0; i < 30; i++) {
         CarEntity* ent = new CarEntity(&steeringSystem, track, i);
         scene.addEntity(ent);
         ent->setTarget(i + 1);
         Vector3D pos = ent->getTrack()->getPoint(i);
-        ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);        
+        ent->getTransform()->setPosition(pos.getX(), pos.getY(), 0);
         registerEntity(cars, *ent);
     }
     
