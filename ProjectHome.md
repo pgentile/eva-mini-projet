@@ -1,0 +1,1 @@
+Le mini-projet du module EVA a pour but de mettre en œuvre un simulateur de trafic automobile.
